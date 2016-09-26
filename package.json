@@ -2,7 +2,7 @@
   "name": "screeps",
   "version": "1.0.0",
   "description": "My take at screeps",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,5 +18,13 @@
   "bugs": {
     "url": "https://github.com/webbertakken/screeps/issues"
   },
-  "homepage": "https://github.com/webbertakken/screeps#readme"
+  "homepage": "https://github.com/webbertakken/screeps#readme",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-eslint": "^19.0.0",
+    "grunt-jscs": "^3.0.1",
+    "grunt-screeps": "^1.2.1"
+  }
 }
