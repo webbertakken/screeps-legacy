@@ -1,0 +1,7 @@
+Object.assign(component, {
+
+  creep: {
+
+  }
+
+});
