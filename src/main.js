@@ -1,25 +1,28 @@
 /**
- * @Title: my-screeps
  * @Description: Home brew AI Script for Screeps.com
- *
- * @Author: Webber, Bram
- * @Date: 20-09-2016
- * @See: https://github.com/brammittendorff/my-screeps
+ * @See: https://github.com/webbertakken/screeps
  */
 
 /**
  *  Load files into global
  */
 
-global.ai           = require('ai');
-global.controller   = require('controller');
-global.template     = require('template');
+const ai           = require('ai');
+const controller   = require('controller');
+const template     = require('template');
+//const profiler      = require('screeps-profiler');
 
+//profiler.enable();
+if(ai && template) {
+  // do something
+}
 /**
  * Loop through game ticks
  */
 
-module.exports.loop = function () {
+module.exports.loop = function() {
+
+  //profiler.wrap(() => {
 
   /**
    * Update Memory
@@ -27,12 +30,12 @@ module.exports.loop = function () {
 
   // Creeps
   _.forEach(Game.creeps, (creep) => {
-    global.controller.memory.updateByCreep(creep);
+    controller.memory.updateByCreep(creep);
   });
 
   // Rooms
   _.forEach(Game.rooms, (room) => {
-    global.controller.memory.updateByRoom(room);
+    controller.memory.updateByRoom(room);
   });
 
   /**
@@ -41,17 +44,19 @@ module.exports.loop = function () {
 
   // Creeps
   _.forEach(Game.creeps, (creep) => {
-    global.controller.creep.routine(creep);
+    controller.creep.routine(creep);
   });
 
   // Rooms
   _.forEach(Game.rooms, (room) => {
-    global.controller.room.routine(room);
+    controller.room.routine(room);
   });
 
   // Structures
   _.forEach(Game.structures, (structure) => {
-    global.controller.structure.routine(structure);
+    controller.structure.routine(structure);
   });
+
+  // }
 
 };

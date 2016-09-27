@@ -4,6 +4,10 @@ Object.assign(component, {
 
     routine: function (structure) {
 
+      if(structure) {
+        // something
+      }
+
     }
 
   }

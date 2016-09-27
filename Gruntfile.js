@@ -16,6 +16,14 @@ module.exports = function (grunt) {
   // grunt init config
   grunt.initConfig({
     concat: {
+      submodule_perf: {
+        src: ['screeps-perf/screeps-perf.js'],
+        dest: 'dist/screeps-perf.js'
+      },
+      submodule_profiler: {
+        src: ['screeps-profiler/screeps-profiler.js'],
+        dest: 'dist/screeps-profiler.js'
+      },
       options: {
         banner: 'var component = {};\n\n',
         footer: '\nmodule.exports = component;',
@@ -42,7 +50,7 @@ module.exports = function (grunt) {
       }
     },
     eslint: {
-      target: ['dist/*.js', 'src/*/*.js'],
+      target: ['src/**.js'],
     },
     screeps: {
       options: {

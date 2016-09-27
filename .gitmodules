@@ -1,0 +1,12 @@
+[submodule "screeps-profiler"]
+	path = screeps-profiler
+	url = https://github.com/gdborton/screeps-profiler
+	branch = master
+[submodule "screeps-globals"]
+	path = screeps-globals
+	url = https://github.com/gdborton/screeps-globals
+	branch = master
+[submodule "screeps-perf"]
+	path = screeps-perf
+	url = https://github.com/gdborton/screeps-perf
+	branch = master

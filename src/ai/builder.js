@@ -6,6 +6,9 @@ Object.assign(component, {
 
       //vars
       var cMemory = creep.memory;
+      if(cMemory) {
+        // something
+      }
 
     }
 
