@@ -4,23 +4,20 @@
  */
 
 /**
- *  Load files into global
+ *  Constants
  */
+import 'screeps-perf';
+import ai from './ai.js';
+import controller from './controller.js';
+import template from './template.js';
+import profiler from 'screeps-profiler';
 
-const ai           = require('ai');
-const controller   = require('controller');
-const template     = require('template');
-//const profiler      = require('screeps-profiler');
 
-//profiler.enable();
-if(ai && template) {
-  // do something
-}
 /**
  * Loop through game ticks
  */
 
-module.exports.loop = function() {
+module.exports.loop = () => {
 
   //profiler.wrap(() => {
 

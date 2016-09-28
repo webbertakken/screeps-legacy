@@ -13,18 +13,35 @@
   "keywords": [
     "screeps"
   ],
-  "author": "webber",
-  "license": "MIT",
+  "author": "Webber <webber.nl@gmail.com>",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/webbertakken/screeps/issues"
   },
   "homepage": "https://github.com/webbertakken/screeps#readme",
-  "dependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-eslint": "^19.0.0",
-    "grunt-jscs": "^3.0.1",
-    "grunt-screeps": "^1.2.1"
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.5.2",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.3",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-2": "^6.5.0",
+    "eslint": "^2.2.0",
+    "eslint-config-airbnb": "^6.0.0",
+    "eslint-plugin-flowtype": "^2.1.0",
+    "eslint-plugin-react": "^4.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-concat-util": "^0.5.5",
+    "gulp-eslint": "^3.0.1",
+    "gulp-screeps": "^1.0.2",
+    "gulp-webpack": "^1.5.0",
+    "screeps-globals": "0.0.1",
+    "screeps-perf": "0.0.1",
+    "screeps-profiler": "^1.1.2"
+  },
+  "optionalPeerDependencies": {
+
   }
 }

@@ -1,3 +1,4 @@
 dist/
+compile/
 node_modules/
 .idea/
