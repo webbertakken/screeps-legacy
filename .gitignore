@@ -2,3 +2,4 @@ dist/
 compile/
 node_modules/
 .idea/
+credentials.js
