@@ -14,9 +14,7 @@ import profiler from 'screeps-profiler';
 // Enable profiler
 profiler.enable();
 
-/**
- * @Description: Loops through Game ticks, to perform all tasks
- */
+// Loop through game ticks
 export function loop() {
   profiler.wrap(() => {
     // Customize Game object

@@ -1,4 +1,4 @@
-Object.assign(component, {
+var harvester = {
 
   harvester: {
 
@@ -16,4 +16,8 @@ Object.assign(component, {
 
   },
 
-});
+};
+
+if(harvester) {
+  //something
+}

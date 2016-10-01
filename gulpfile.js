@@ -4,9 +4,8 @@ var webpack      = require('webpack');
 var screeps      = require('gulp-screeps');
 var eslint       = require('gulp-eslint');
 
-gulp.task('sync', ['eslint', 'compile', 'upload']);
 
-gulp.task('upload', function() {
+gulp.task('sync', ['compile'], function() {
   return gulp.src('dist/*.js*')
     .pipe(
       screeps({
@@ -57,7 +56,7 @@ gulp.task('eslint', function() {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('compile', function() {
+gulp.task('compile', ['eslint'], function() {
   return gulp.src('src/main.js')
     .pipe(gulpWebpack( {
       output: {

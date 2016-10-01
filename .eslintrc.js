@@ -638,6 +638,12 @@ module.exports = {
       }
     },
     '_': true,
-    'component': {}
+    "StructureController": true,
+    "StructureSpawn": true,
+    "StructureExtension": true,
+    "StructureWall": true,
+    "StructureRampart": true,
+    "StructureTower": true,
+    "StructureLink": true,
   },
 };
