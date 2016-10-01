@@ -4,8 +4,6 @@ Object.assign(Creep.prototype, {
 
   routine() {
 
-    console.log('creep routine');
-
   }
 
 });

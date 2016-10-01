@@ -1,13 +1,13 @@
 var gulp         = require('gulp');
-var webpack      = require('gulp-webpack');
+var gulpWebpack  = require('gulp-webpack');
+var webpack      = require('webpack');
 var screeps      = require('gulp-screeps');
 var eslint       = require('gulp-eslint');
 
 gulp.task('sync', ['eslint', 'compile', 'upload']);
-gulp.task('eslint', ['eslint:src']);
 
 gulp.task('upload', function() {
-  return gulp.src('dist/*.js')
+  return gulp.src('dist/*.js*')
     .pipe(
       screeps({
         email: process.env.SCREEPS_EMAIL,
@@ -18,7 +18,7 @@ gulp.task('upload', function() {
     );
 });
 
-gulp.task('eslint:src', function() {
+gulp.task('eslint', function() {
   return gulp.src(['src/*.js', 'src/*/*.js'])
     .pipe(eslint( {
       parser: 'babel-eslint',
@@ -59,7 +59,7 @@ gulp.task('eslint:src', function() {
 
 gulp.task('compile', function() {
   return gulp.src('src/main.js')
-    .pipe(webpack( {
+    .pipe(gulpWebpack( {
       output: {
         filename: 'main.js',
         libraryTarget: 'commonjs2',
@@ -67,11 +67,14 @@ gulp.task('compile', function() {
       },
       cache: true,
       debug: true,
-      devTool: 'source-map',
+      devtool: 'source-map',
       stats: {
         colors: true,
         reasons: true,
       },
+      plugins: [
+        new webpack.optimize.UglifyJsPlugin()
+      ],
       module: {
         loaders: [
           {
@@ -87,7 +90,7 @@ gulp.task('compile', function() {
           },
         ],
       },
-    } ))
+    } ), webpack)
     .pipe(gulp.dest('dist/'));
 });
 

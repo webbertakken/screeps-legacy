@@ -11,6 +11,9 @@ import './controller/creep';
 import './controller/structure';
 import profiler from 'screeps-profiler';
 
+// Enable profiler
+profiler.enable();
+
 /**
  * @Description: Loops through Game ticks, to perform all tasks
  */

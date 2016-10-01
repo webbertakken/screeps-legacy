@@ -4,8 +4,6 @@ Object.assign(Room.prototype, {
 
   routine() {
 
-    console.log('room routine');
-
   }
 
 });
