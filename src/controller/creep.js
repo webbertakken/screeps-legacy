@@ -1,13 +1,10 @@
-Object.assign(component, {
+import { Creep } from 'screeps-globals';
 
-  creep: {
+Object.assign(Creep.prototype, {
 
-    routine: function (creep) {
+  routine() {
 
-      let cMemory = creep.memory;
-      ai[cMemory.role].routine(creep);
-
-    }
+    console.log('creep routine');
 
   }
 

@@ -1,59 +1,34 @@
 /**
- * @Description: Home brew AI Script for Screeps.com
+ * @Description: Home brew AI Script for Screeps
  * @See: https://github.com/webbertakken/screeps
  */
 
-/**
- *  Constants
- */
+// Import in order
 import 'screeps-perf';
-import ai from './ai.js';
-import controller from './controller.js';
-import template from './template.js';
+import game from './controller/game';
+import './controller/room';
+import './controller/creep';
+import './controller/structure';
 import profiler from 'screeps-profiler';
 
-
 /**
- * Loop through game ticks
+ * @Description: Loops through Game ticks, to perform all tasks
  */
-
-module.exports.loop = () => {
-
-  //profiler.wrap(() => {
-
-  /**
-   * Update Memory
-   */
-
-  // Creeps
-  _.forEach(Game.creeps, (creep) => {
-    controller.memory.updateByCreep(creep);
+export function loop() {
+  profiler.wrap(() => {
+    // Customize Game object
+    game.init();
+    // Creeps
+    _.forEach(Object.keys(Game.creeps), (creepName) => {
+      Game.creeps[creepName].routine();
+    });
+    // Rooms
+    _.forEach(Object.keys(Game.rooms), (roomName) => {
+      Game.rooms[roomName].routine();
+    });
+    // Structures
+    _.forEach(Object.keys(Game.structures), (structureName) => {
+      Game.structures[structureName].routine();
+    });
   });
-
-  // Rooms
-  _.forEach(Game.rooms, (room) => {
-    controller.memory.updateByRoom(room);
-  });
-
-  /**
-   * Distribute Tasks
-   */
-
-  // Creeps
-  _.forEach(Game.creeps, (creep) => {
-    controller.creep.routine(creep);
-  });
-
-  // Rooms
-  _.forEach(Game.rooms, (room) => {
-    controller.room.routine(room);
-  });
-
-  // Structures
-  _.forEach(Game.structures, (structure) => {
-    controller.structure.routine(structure);
-  });
-
-  // }
-
-};
+}

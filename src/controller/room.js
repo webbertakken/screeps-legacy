@@ -1,14 +1,10 @@
-Object.assign(component, {
+import { Room } from 'screeps-globals';
 
-  room: {
+Object.assign(Room.prototype, {
 
-    routine: function (room) {
+  routine() {
 
-      if(room) {
-        // something
-      }
-
-    }
+    console.log('room routine');
 
   }
 

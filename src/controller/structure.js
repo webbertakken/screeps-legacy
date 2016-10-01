@@ -1,14 +1,10 @@
-Object.assign(component, {
+import { Structure } from 'screeps-globals';
 
-  structure: {
+Object.assign(Structure.prototype, {
 
-    routine: function (structure) {
+  routine() {
 
-      if(structure) {
-        // something
-      }
-
-    }
+    console.log('structure routine');
 
   }
 
