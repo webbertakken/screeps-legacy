@@ -3,12 +3,12 @@
 ### NodeJS
 Install the latest version of NodeJS from [https://nodejs.org/en/]. 
 This will also automatically install Node Package Manager.
-### Dependancies
+### Dependencies
 You might want to install Gulp and Webpack globally on your system.
 ```
 npm install -g gulp webpack webpack-stream
 ```
-Install dependancies using Node Package Manager, asuming you're using the latest version of NodeJS.
+Install dependencies using Node Package Manager, asuming you're using the latest version of NodeJS.
 ```
 npm install
 ```
