@@ -1,4 +1,3 @@
-import { Creep } from 'screeps-globals';
 import Builder from '../creep/Builder';
 import Harvester from '../creep/Harvester';
 import Truck from '../creep/Truck';
@@ -12,7 +11,6 @@ const creepMap = {
 };
 
 class CreepMapper {
-
   creeps() {
     return Object.keys(Game.creeps).map(creepName => {
       const creep = Game.creeps[creepName];
@@ -20,16 +18,18 @@ class CreepMapper {
     });
   }
 
-  mapCreep(creep) {
-    return new creepMap[creep.memory.role](creep);
+  creepsWithRole(role) {
+    return this.creeps().filter(creep => creep.memory.role === role);
   }
 
+  mapCreep(creep) {
+    const Constructor = creepMap[creep.memory.role];
+    if (Constructor) {
+      return new Constructor(creep.id);
+    }
+    return creep;
+  }
 }
 
 const creepMapper = new CreepMapper();
-
-Creep.prototype.map = function mapCreep() {
-  return creepMapper.mapCreep(this);
-};
-
 export default creepMapper;

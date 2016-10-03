@@ -4,10 +4,12 @@ import creepMapper from '../util/creepMapper';
 Object.assign(Creep.prototype, {
 
   routine() {
-
+    if(this.performRole) {
+      this.performRole();
+    }
   },
 
-  map() {
+  reMap() {
     return creepMapper.mapCreep(this);
   }
 

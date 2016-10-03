@@ -9,6 +9,7 @@ import game from './controller/game';
 import './controller/room';
 import './controller/creep';
 import './controller/structure';
+import creepMapper from './util/creepMapper';
 import structureMapper from './util/structureMapper';
 import profiler from 'screeps-profiler';
 
@@ -21,8 +22,8 @@ export function loop() {
     // Customize Game object
     game.init();
     // Creeps
-    _.forEach(Object.keys(Game.creeps), (creepName) => {
-      Game.creeps[creepName].routine();
+    _.forEach(creepMapper.creeps(), (creep) => {
+      creep.routine();
     });
     // Rooms
     _.forEach(Object.keys(Game.rooms), (roomName) => {

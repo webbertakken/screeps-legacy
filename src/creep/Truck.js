@@ -1,8 +1,8 @@
-import '../controller/Creep.js';
+import '../controller/Creep';
 
 export default class Truck extends Creep {
 
-  routine() {
+  performRole() {
 
   }
 

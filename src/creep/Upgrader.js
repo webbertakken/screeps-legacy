@@ -1,8 +1,8 @@
-import '../controller/Creep.js';
+import '../controller/Creep';
 
 export default class Upgrader extends Creep {
 
-  routine() {
+  performRole() {
 
   }
 

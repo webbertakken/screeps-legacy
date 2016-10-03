@@ -1,8 +1,8 @@
-import '../controller/Creep.js';
+import '../controller/Creep';
 
 export default class Builder extends Creep {
 
-  routine() {
+  performRole() {
 
   }
 
