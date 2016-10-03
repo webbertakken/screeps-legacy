@@ -28,18 +28,9 @@ export function loop() {
     _.forEach(Object.keys(Game.rooms), (roomName) => {
       Game.rooms[roomName].routine();
     });
-    // Structure class-based
-
-    //Structures
-    //console.log(JSON.stringify(structureManager.structures()));
-    //console.log(JSON.stringify(Game.structures));
+    //Structures (Mapped by structureType)
     _.forEach(structureManager.structures(), (structure) => {
       structure.routine();
     });
-
-    // Structures
-    // _.forEach(Object.keys(Game.structures), (structureName) => {
-    //   Game.structures[structureName].routine();
-    // });
   });
 }
