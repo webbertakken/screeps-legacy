@@ -4,15 +4,12 @@ import structureMapper from '../util/structureMapper';
 Object.assign(Structure.prototype, {
 
   routine() {
-    if(this.map) {
-      this.map();
-    }
     if(this.performRole) {
       this.performRole();
     }
   },
 
-  map() {
+  reMap() {
     return structureMapper.mapStructure(this);
   }
 

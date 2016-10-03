@@ -9,6 +9,7 @@ import game from './controller/game';
 import './controller/room';
 import './controller/creep';
 import './controller/structure';
+import structureManager from './util/structureMapper';
 import profiler from 'screeps-profiler';
 
 // Enable profiler
@@ -27,9 +28,18 @@ export function loop() {
     _.forEach(Object.keys(Game.rooms), (roomName) => {
       Game.rooms[roomName].routine();
     });
-    // Structures
-    _.forEach(Object.keys(Game.structures), (structureName) => {
-      Game.structures[structureName].routine();
+    // Structure class-based
+
+    //Structures
+    //console.log(JSON.stringify(structureManager.structures()));
+    //console.log(JSON.stringify(Game.structures));
+    _.forEach(structureManager.structures(), (structure) => {
+      structure.routine();
     });
+
+    // Structures
+    // _.forEach(Object.keys(Game.structures), (structureName) => {
+    //   Game.structures[structureName].routine();
+    // });
   });
 }
