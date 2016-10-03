@@ -1,9 +1,13 @@
 var gulp          = require('gulp');
-var webpackStream = require('webpackStream');
+var watch         = require('gulp-watch');
+var webpackStream = require('webpack-stream');
 var webpack       = require('webpack');
 var screeps       = require('gulp-screeps');
 var eslint        = require('gulp-eslint');
 
+gulp.task('watch', function() {
+  return watch('src/**.js', ['sync']);
+});
 
 gulp.task('sync', ['compile'], function() {
   return gulp.src('dist/*.js*')
@@ -15,6 +19,43 @@ gulp.task('sync', ['compile'], function() {
         ptr: false
       })
     );
+});
+
+gulp.task('compile', ['eslint'], function() {
+  return gulp.src('src/main.js')
+    .pipe(webpackStream( {
+      output: {
+        filename: 'main.js',
+        libraryTarget: 'commonjs2',
+        sourceMapFilename: 'main.js.map',
+      },
+      cache: true,
+      debug: true,
+      devtool: 'source-map',
+      stats: {
+        colors: true,
+        reasons: true,
+      },
+      plugins: [
+        new webpack.optimize.UglifyJsPlugin()
+      ],
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            loader: 'babel-loader',
+            query: {
+              presets: [
+                require.resolve('babel-preset-react'), // React preset is needed only for flow support.
+                require.resolve('babel-preset-es2015'),
+                require.resolve('babel-preset-stage-2'),
+              ],
+            },
+          },
+        ],
+      },
+    } ), webpack)
+    .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('eslint', function() {
@@ -54,43 +95,6 @@ gulp.task('eslint', function() {
     } ))
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
-});
-
-gulp.task('compile', ['eslint'], function() {
-  return gulp.src('src/main.js')
-    .pipe(gulpWebpack( {
-      output: {
-        filename: 'main.js',
-        libraryTarget: 'commonjs2',
-        sourceMapFilename: 'main.js.map',
-      },
-      cache: true,
-      debug: true,
-      devtool: 'source-map',
-      stats: {
-        colors: true,
-        reasons: true,
-      },
-      plugins: [
-        new webpack.optimize.UglifyJsPlugin()
-      ],
-      module: {
-        loaders: [
-          {
-            test: /\.js$/,
-            loader: 'babel-loader',
-            query: {
-              presets: [
-                require.resolve('babel-preset-react'), // React preset is needed only for flow support.
-                require.resolve('babel-preset-es2015'),
-                require.resolve('babel-preset-stage-2'),
-              ],
-            },
-          },
-        ],
-      },
-    } ), webpack)
-    .pipe(gulp.dest('dist/'));
 });
 
 

@@ -30,11 +30,13 @@
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
     "gulp-screeps": "^1.0.2",
+    "gulp-watch": "^4.3.10",
     "gulp-webpack": "^1.5.0",
     "screeps-globals": "0.0.1",
     "screeps-perf": "0.0.1",
     "screeps-profiler": "^1.1.2",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-stream": "^3.2.0"
   },
   "optionalPeerDependencies": {}
 }
