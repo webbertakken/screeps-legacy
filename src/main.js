@@ -9,7 +9,7 @@ import game from './controller/game';
 import './controller/room';
 import './controller/creep';
 import './controller/structure';
-import structureManager from './util/structureMapper';
+import structureMapper from './util/structureMapper';
 import profiler from 'screeps-profiler';
 
 // Enable profiler
@@ -29,7 +29,7 @@ export function loop() {
       Game.rooms[roomName].routine();
     });
     //Structures (Mapped by structureType)
-    _.forEach(structureManager.structures(), (structure) => {
+    _.forEach(structureMapper.structures(), (structure) => {
       structure.routine();
     });
   });
