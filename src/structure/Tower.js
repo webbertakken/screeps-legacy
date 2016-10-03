@@ -6,21 +6,23 @@ export default class Tower extends StructureTower {
    * @see http://support.screeps.com/hc/en-us/articles/203339002-Defending-your-room
    */
 
-  routine = function (entity) {
+  performRole() {
+
+    console.log('performing role');
 
     var targets = {};
-    var room = entity.room;
+    var room = this.room;
 
     /**
      * priority order
      */
 
     // things to always shoot at
-    if (entity.energy > 0) {
+    if (this.energy > 0) {
 
       targets = room.find(FIND_HOSTILE_CREEPS);
       if (targets.length) {
-        this.attackClosestTarget(entity, targets);
+        this.attackClosestTarget(this, targets);
         return;
       }
 
@@ -31,36 +33,36 @@ export default class Tower extends StructureTower {
         },
       });
       if (targets.length) {
-        this.attackClosestTarget(entity, targets);
+        this.attackClosestTarget(this, targets);
         return;
       }
 
     }
 
-    if (entity.energy > entity.energyCapacity / 4) {
+    if (this.energy > this.energyCapacity / 4) {
 
       // attack hostile construction sites //FIND_HOSTILE_CONSTRUCTION_SITES
       targets = room.find(FIND_HOSTILE_CONSTRUCTION_SITES);
       if (targets.length) {
-        this.attackClosestTarget(entity, targets);
+        this.attackClosestTarget(this, targets);
         return;
       }
 
     }
 
-    if (entity.energy > entity.energyCapacity / 2) {
+    if (this.energy > this.energyCapacity / 2) {
 
       // attack enemy primary structures //STRUCTURE_TOWER
       targets = room.find(FIND_HOSTILE_SPAWNS);
       if (targets.length) {
-        this.attackClosestTarget(entity, targets);
+        this.attackClosestTarget(this, targets);
         return;
       }
 
       // attack enemy //FIND_HOSTILE_STRUCTURES
       targets = room.find(FIND_HOSTILE_STRUCTURES);
       if (targets.length) {
-        this.attackClosestTarget(entity, targets);
+        this.attackClosestTarget(this, targets);
       }
 
       targets = room.find(FIND_MY_STRUCTURES, {
@@ -69,13 +71,13 @@ export default class Tower extends StructureTower {
         },
       });
       if (targets.length) {
-        this.repairClosestTarget(entity, targets);
+        this.repairClosestTarget(this, targets);
         return;
       }
 
     }
 
-    if (entity.energy > (entity.energyCapacity / 4) * 3) {
+    if (this.energy > (this.energyCapacity / 4) * 3) {
 
       // heal friendly non-military creeps
       targets = room.find(FIND_MY_CREEPS, {
@@ -84,7 +86,7 @@ export default class Tower extends StructureTower {
         },
       });
       if (targets.length) {
-        this.healClosestTarget(entity, targets);
+        this.healClosestTarget(this, targets);
         return;
       }
 
@@ -95,7 +97,7 @@ export default class Tower extends StructureTower {
         }
       });
       if (targets.length) {
-        this.repairClosestTarget(entity, targets);
+        this.repairClosestTarget(this, targets);
         return;
       }
 
@@ -106,7 +108,7 @@ export default class Tower extends StructureTower {
         },
       });
       if (targets.length) {
-        this.repairClosestTarget(entity, targets);
+        this.repairClosestTarget(this, targets);
         return;
       }
 
@@ -124,7 +126,7 @@ export default class Tower extends StructureTower {
           }
         });
         if (targets.length) {
-          this.repairLowestTarget(entity, targets);
+          this.repairLowestTarget(this, targets);
           return;
         }
 
@@ -132,7 +134,7 @@ export default class Tower extends StructureTower {
 
     }
 
-  };
+  }
 
   attackClosestTarget = function (entity, targets) {
     var target = entity.pos.findClosestByRange(targets);
