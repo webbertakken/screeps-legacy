@@ -28,7 +28,7 @@ class StructureMapper {
     return legacyStructures.map(this.mapStructure);
   }
 
-  static mapStructure(structure) {
+  mapStructure(structure) {
     const Constructor = structureMap[structure.structureType];
     if (Constructor) {
       return new Constructor(structure.id);
