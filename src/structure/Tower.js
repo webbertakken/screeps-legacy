@@ -8,8 +8,6 @@ export default class Tower extends StructureTower {
 
   performRole() {
 
-    console.log('performing role');
-
     var targets = {};
     var room = this.room;
 
