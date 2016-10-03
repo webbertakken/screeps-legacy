@@ -1,8 +1,8 @@
-var gulp         = require('gulp');
-var gulpWebpack  = require('gulp-webpack');
-var webpack      = require('webpack');
-var screeps      = require('gulp-screeps');
-var eslint       = require('gulp-eslint');
+var gulp          = require('gulp');
+var webpackStream = require('webpackStream');
+var webpack       = require('webpack');
+var screeps       = require('gulp-screeps');
+var eslint        = require('gulp-eslint');
 
 
 gulp.task('sync', ['compile'], function() {
