@@ -3,7 +3,6 @@ import '../controller/Creep';
 export default class Harvester extends Creep {
 
   performRole() {
-
     //vars
     var cMemory = this.memory;
 

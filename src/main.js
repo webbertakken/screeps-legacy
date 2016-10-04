@@ -2,13 +2,16 @@
  * @Description: Home brew AI Script for Screeps
  * @See: https://github.com/webbertakken/screeps
  */
+'use strict';
 
 // Import in order
 import 'screeps-perf';
-import game from './controller/game';
-import './controller/room';
-import './controller/creep';
-import './controller/structure';
+import game from './controller/Game';
+import './controller/Source';
+import './controller/RoomPosition';
+import './controller/Room';
+import './controller/Creep';
+import './controller/Structure';
 import creepMapper from './util/creepMapper';
 import structureMapper from './util/structureMapper';
 import profiler from 'screeps-profiler';
