@@ -22,7 +22,6 @@ profiler.enable();
 // Loop through game ticks
 export function loop() {
   profiler.wrap(() => {
-    // Customize Game object
     game.init();
     // Creeps
     _.forEach(creepMapper.creeps(), (creep) => {
