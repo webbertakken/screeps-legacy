@@ -14,6 +14,13 @@ Object.assign(Room.prototype, {
   },
 
   buildCreeps() {
+    // initial income
+    if(this.countCreepsWithRole('harvester') < 1) {
+      this.buildCreepWithRole('initialHarvester');
+    }
+    if(this.countCreepsWithRole('truck') < 1) {
+      this.buildCreepWithRole('initialTruck');
+    }
     if(this.memory.harvestersNeeded > this.countCreepsWithRole('harvester')) {
       this.buildCreepWithRole('harvester');
     }
