@@ -9,9 +9,9 @@ module.exports = {
     WORK,
     CARRY
   ],
-  name: 'harvester' + _.random(1000, 1999),
+  name: 'truck' + _.random(1000, 1999),
   memory: {
-    role: 'harvester',
+    role: 'truck',
     targetResourceId: null,
   },
 };
