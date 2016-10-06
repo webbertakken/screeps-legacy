@@ -12,7 +12,7 @@ export default class Harvester extends Creep {
     } else if (this.memory.activity === 'salvaging') {
       this.task_salvage();
     } else {
-      console.log('[' + this.name + '] no activity...');
+      this.say('bugged');
     }
   }
 
