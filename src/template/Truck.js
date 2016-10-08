@@ -10,8 +10,5 @@ module.exports = {
     CARRY
   ],
   name: 'truck' + _.random(1000, 1999),
-  memory: {
-    role: 'truck',
-    targetResourceId: null,
-  },
+  memory: {},
 };

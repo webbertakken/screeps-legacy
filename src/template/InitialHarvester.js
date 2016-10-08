@@ -7,8 +7,5 @@ module.exports = {
     CARRY
   ],
   name: 'initialHarvester' + _.random(1000, 1999),
-  memory: {
-    role: 'harvester',
-    targetResourceId: null,
-  },
+  memory: {},
 };

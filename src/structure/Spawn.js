@@ -4,21 +4,48 @@ import template from '../controller/Template';
 export default class Spawn extends StructureSpawn {
 
   performRole() {
-    if(this.room.memory.buildQueue.length) {
-      this.buildCreep();
+    if(this.room.memory.buildQueue && this.room.memory.buildQueue.length) {
+      this.buildQueuedCreep();
     }
   }
 
-  buildCreep(){
+  buildQueuedCreep(){
+    if(this.room.memory.buildQueue[0].beingBuilt === true) {
+      return;
+    }
     const item = this.room.memory.buildQueue[0];
     const bp   = template[item.template];
-    Object.assign(item.memory, bp.memory);
-    if(bp.cost <= this.room.energyAvailable) {
-      if(this.canCreateCreep(bp.body, bp.name) == 0) {
-        console.log(this.createCreep(bp.body, bp.name, item.memory));
-        delete this.memory.buildQueue[0];
-      }
+    if(bp.cost > this.room.energyAvailable) {
+      return;
     }
+    Object.assign(item.memory, bp.memory);
+    let creepName = this.createCreepWithRole(bp.body, bp.name, item.memory);
+    if(creepName) {
+      this.addCountToRole(item.role);
+      this.markQueueItemAsBeingBuiltWithName(creepName);
+    }
+  }
+
+  createCreepWithRole(body, name, memory) {
+    if (this.canCreateCreep(body, name) == 0) {
+      return this.createCreep(body, name, memory);
+    }
+    return false;
+  }
+
+  // set beingBuilt to true, add name to watch completion for and move to end of queue
+  markQueueItemAsBeingBuiltWithName(creepName) {
+    let queue = this.room.memory.buildQueue;
+    Object.assign(queue[0], {
+      createdThisTick: true,
+      beingBuilt: true,
+      name: creepName
+    });
+    queue.push(queue.shift());
+  }
+
+  addCountToRole(role) {
+    return (this.room.memory.creeps[role] += 1);
   }
 
 }

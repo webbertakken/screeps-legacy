@@ -23,7 +23,7 @@ profiler.enable();
 export function loop() {
   profiler.wrap(() => {
     game.init();
-    // Creeps
+    // Creeps (Mapped by role)
     _.forEach(creepMapper.creeps(), (creep) => {
       creep.routine();
     });

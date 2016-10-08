@@ -2,21 +2,33 @@ import { Room } from 'screeps-globals';
 
 Object.assign(Room.prototype, {
 
-  // default routine
   routine() {
-    if(!this.memory.initiated) {
+    if(!this.isInitiated()) {
       this.initiate();
+      return;
     }
-    if((Game.time & 1) == 0) {
+    if((Game.time % 12) == 0) {
       this.countRoles();
       this.populate();
     }
   },
 
-  // initiate rooms memory
+  isInitiated(setter) {
+    if(setter === undefined) {
+      return !!this.memory.isInitiated;
+    } else {
+      return this.memory.isInitiated = !!setter;
+    }
+  },
+
   initiate() {
-    if(!this.memory.buildQueue)  { this.memory.buildQueue = []; }
-    if(!this.memory.creeps)      { this.memory.creeps = {};     }
+    console.log('Initiating room');
+    if (!this.memory.buildQueue) {
+      this.memory.buildQueue = [];
+    }
+    if (!this.memory.creeps) {
+      this.memory.creeps = {};
+    }
     this.memory.sources = [];
     _.forEach(this.find(FIND_SOURCES), (source) => {
       this.memory.sources.push({
@@ -27,54 +39,74 @@ Object.assign(Room.prototype, {
       });
     });
     this.memory.harvestersNeeded = this.memory.sources.length;
+    this.isInitiated(true);
   },
 
-  // populate room with needed creeps
   populate() {
     if(!this.memory.creeps.harvester) {
       this.memory.creeps.harvester = 0;
     }
     if(this.memory.creeps.harvester === 0) {
-      this.addToQueue('harvester', 'initialHarvester', {});
+      this.addPriorityCreepToQueue('harvester', 'initialHarvester', {});
     } else if (this.memory.creeps.harvester < this.memory.harvestersNeeded) {
-      this.addToQueue('harvester', 'harvester', {});
+      this.addCreepToQueue('harvester', 'harvester', {});
     }
   },
 
-  // add creep to queue
-  addToQueue(role, template, memory) {
+  addCreepToQueue(role, template, memory) {
     Object.assign(memory, { role: role });
     this.memory.buildQueue.push({
       role: role,
       template: template,
       memory: memory,
     });
+    this.memory.creeps[role] += 1;
   },
 
-  // count active and queued creeps by role
+  addPriorityCreepToQueue(role, template, memory) {
+    Object.assign(memory, { role: role });
+    this.memory.buildQueue.unshift({
+      role: role,
+      template: template,
+      memory: memory,
+    });
+    this.memory.creeps[role] += 1;
+  },
+
   countRoles() {
-    const encounteredRoles = [];
+    var encounteredRoles = [];
+    // alive creeps
     _.forEach(this.find(FIND_MY_CREEPS).filter((creep) => {
-      return (creep.memory.status != 'beingReplaced' && creep.memory.status != 'iAmOld');
+      return (creep.memory.isInitiated === true && !creep.memory.isOld === true);
     }), (creep) => {
       const role = creep.memory.role;
-      if(!encounteredRoles.indexOf(role)) {
+      if(encounteredRoles.indexOf(role) === -1) {
         encounteredRoles.push(role);
         this.memory.creeps[role] = 1;
       } else {
         this.memory.creeps[role]++;
       }
     });
+    // queued creeps
     _.forEach(this.memory.buildQueue, (queueItem) => {
       const role = queueItem.role;
-      if(!encounteredRoles.indexOf(role)) {
+      if(encounteredRoles.indexOf(role) === -1) {
         encounteredRoles.push(role);
         this.memory.creeps[role] = 1;
       } else {
         this.memory.creeps[role]++;
       }
+    });
+    // vanished creeps
+    _.remove(this.memory.creeps, (count, type) => {
+      return (encounteredRoles.indexOf(type) === -1);
     });
   },
 
+  removeQueueItemByName(creepName) {
+    _.remove(this.memory.buildQueue, (queueItem) => {
+      return queueItem.name === creepName;
+    });
+  }
 
 });
