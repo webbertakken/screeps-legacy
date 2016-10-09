@@ -7,7 +7,9 @@ Object.assign(RoomPosition.prototype, {
   },
 
   isWalkable() {
-    this.lookFor(LOOK_TERRAIN)[0].filter((terrain) => { return (terrain == 'plain' || terrain == 'swamp'); });
+    this.lookFor(LOOK_TERRAIN)[0].filter((terrain) => {
+      return (terrain == 'plain' || terrain == 'swamp');
+    });
   },
 
   findSpotsAround() {
@@ -15,7 +17,9 @@ Object.assign(RoomPosition.prototype, {
   },
 
   findWalkableSpotsAround() {
-    return this.findSpotsAround().filter((position) => { return (position.terrain == 'swamp' || position.terrain == 'plain'); });
+    return this.findSpotsAround().filter((position) => {
+      return (position.terrain == 'swamp' || position.terrain == 'plain');
+    });
   }
 
 });
