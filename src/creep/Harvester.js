@@ -2,10 +2,15 @@ import '../controller/Creep';
 
 export default class Harvester extends Creep {
 
+  instruct() {
+    this.memory.activity = 'harvesting';
+    this.assignToClosestFreeSource();
+    this.isGivenInstructions(true);
+    this.say('Mine!?');
+  }
+
   performRole() {
-    if (!this.isGivenInstructions()) {
-      this.instruct();
-    } else if (this.memory.activity === 'harvesting') {
+    if (this.memory.activity === 'harvesting') {
       this.task_harvest();
     } else if (this.memory.activity === 'emptying') {
       this.task_empty();
@@ -19,25 +24,16 @@ export default class Harvester extends Creep {
   assignToClosestFreeSource() {
     const targetSource = (this.room.memory.sources)
       .filter((source) => {
-        return (source.assignee === false);
+        return !source.assignee.length;
       })[0];
-    this.memory.targetSourceId = targetSource.id;
-    targetSource.assignee = this.id;
+    if(targetSource && targetSource.id) {
+      this.memory.targetSourceId = targetSource.id;
+      targetSource.assignee = this.id;
+    }
   }
 
   isAssignedToSource() {
     return !!this.memory.targetSourceId;
-  }
-
-
-  instruct() {
-    this.memory.activity = 'harvesting';
-    if(!this.isAssignedToSource()) {
-      this.assignToClosestFreeSource();
-    }
-    this.memory.origin = this.room.name;
-    this.isGivenInstructions(true);
-    this.say('Mine!?');
   }
 
   age_check() {
