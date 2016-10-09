@@ -26,7 +26,19 @@ Object.assign(Creep.prototype, {
 
   initiate() {
     this.room.removeQueueItemByName(this.name);
+    this.origin(this.room.name);
+    if(this.instruct) {
+      this.instruct();
+    }
     this.isInitiated(true);
+  },
+
+  origin(setter) {
+    if(setter === undefined) {
+      return this.memory.origin;
+    } else {
+      return this.memory.origin = setter;
+    }
   },
 
   isGivenInstructions(setter) {
