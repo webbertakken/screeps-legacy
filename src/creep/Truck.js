@@ -78,7 +78,7 @@ export default class Truck extends Creep {
     let assigner = this.room.findLonelyHarvesters();
     if(assigner && assigner[0]) {
       this.memory.assignedHarvester = assigner[0].id;
-      assigner[0].memory.assignee = this.id;
+      assigner[0].memory.assignedTruck = this.id;
     }
   }
 

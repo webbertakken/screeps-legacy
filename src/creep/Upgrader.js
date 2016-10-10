@@ -12,7 +12,7 @@ export default class Upgrader extends Creep {
 
   upgrade() {
     if(this.upgradeController(this.room.controller) == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.room.controller, {});
+      this.moveTo(this.room.controller);
     }
   }
 

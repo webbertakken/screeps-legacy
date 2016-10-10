@@ -10,47 +10,51 @@ export default class Harvester extends Creep {
   }
 
   performRole() {
-    if (this.memory.activity === 'harvesting') {
-      this.task_harvest();
-    } else if (this.memory.activity === 'emptying') {
-      this.task_empty();
-    } else if (this.memory.activity === 'salvaging') {
-      this.task_salvage();
-    } else {
-      this.say('bugged');
+    this.MOTTest();
+    this.task_harvest();
+    this.task_empty();
+    this.task_salvage();
+  }
+
+  MOTTest() {
+    if(Game.time % 30 !== 0) {
+      return;
+    }
+    this.replacementCheck();
+  }
+
+  replacementCheck() {
+    if(this.isOld()) {
+
+      if (!this.isBeingReplaced()) {
+        this.unassignHarvesterFromSource();
+        this.replaceMe();
+      } else if (this.replacementHasArrived()) {
+        this.activity('emptying');
+      }
     }
   }
 
-  assignToClosestFreeSource() {
-    const targetSource = (this.room.memory.sources)
-      .filter((source) => {
-        return !source.assignee.length;
-      })[0];
-    if(targetSource && targetSource.id) {
-      this.memory.targetSourceId = targetSource.id;
-      targetSource.assignee = this.id;
-    }
+  replacementHasArrived() {
+    return !!_.filter(this.pos.findInRange(FIND_MY_CREEPS, 1), (creep) => {
+      return creep.memory.replacementFor && creep.memory.replacementFor === this.id;
+    }).length;
   }
 
-  isAssignedToSource() {
-    return !!this.memory.targetSourceId;
-  }
-
-  age_check() {
-    if(this.isOld() && !this.isBeingReplaced()) {
-      this.room.memory.taskQueue.push({
-        task: 'replaceCreep',
-        creepToReplace: this.name
-      });
-      this.memory.iAmBeingReplaced = true;
-      this.say('I\'m old...');
-      this.memory.activity = 'emptying';
+  replaceMe() {
+    if(Game.rooms[this.origin()].setReplacementIdForFirstRoleInQueue(this.id, this.role())) {
+      this.say('beingRep');
+      this.isBeingReplaced(true);
+      this.say('beingreplacedSetToTrueNow');
     }
   }
 
   // just move there and harvest till you're old
   task_harvest() {
-    const targetSource = Game.getObjectById(this.memory.targetSourceId);
+    if (this.activity() !== 'harvesting') {
+      return;
+    }
+    const targetSource = Game.getObjectById(this.targetSource());
     if (this.harvest(targetSource) == ERR_NOT_IN_RANGE) {
       this.moveTo(targetSource);
     }
@@ -58,20 +62,72 @@ export default class Harvester extends Creep {
 
   // i'm old, so i'm emptying
   task_empty() {
-    if (this.carry.energy == 0) {
-      this.say('scrap metal!');
-      this.activity = 'salvaging';
+    if(this.activity !== 'emptying') {
       return;
     }
-    if ((Game.time & 0x0A) == 0) {
-      this.say('so tired..');
+    this.say('so tired..');
+    if(this.isEmpty()) {
+      this.activity('salvaging');
     }
   }
 
   // i'm old and empty, time to salvage myself
   task_salvage() {
-    if( (Game.time & 0x0A) == 0) {
-      this.say('Bye world!');
+    if (this.activity() !== 'salvaging') {
+      return;
+    }
+    this.unassignTruck();
+    if(!this.isNextTo(this.disassemblerLocation())) {
+      this.moveTo(this.disassemblerLocation());
+    }
+    this.say('Bye world!');
+  }
+
+  assignedTruck(setter) {
+    if(setter === undefined) {
+      return this.memory.assignedTruck || false;
+    } else {
+      return this.memory.assignedTruck = setter;
+    }
+  }
+
+  unassignTruck() {
+    if(this.assignedTruck()) {
+      Game.getObjectById(this.assignedTruck()).memory.assignedHarvester = false;
+      this.assignedTruck(false);
+    }
+  }
+
+  isAssignedToSource() {
+    return !!this.targetSource();
+  }
+
+  targetSource(setter) {
+    if(setter === undefined) {
+      return this.memory.targetSourceId || false;
+    } else {
+      return this.memory.targetSourceId = setter;
+    }
+  }
+
+  assignToClosestFreeSource() {
+    const target = (this.room.memory.sources)
+      .filter((source) => {
+        return !source.assignedHarvester;
+      })[0];
+    if(target && target.id) {
+      this.targetSource(target.id);
+      target.assignedHarvester = this.id;
+    }
+  }
+
+  unassignHarvesterFromSource() {
+    const target = (this.room.memory.sources)
+      .filter((source) => {
+        return source.assignedHarvester === this.id;
+      })[0];
+    if(target && target.assignedHarvester) {
+      delete target.assignedHarvester;
     }
   }
 

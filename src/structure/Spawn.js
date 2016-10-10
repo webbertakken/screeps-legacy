@@ -37,7 +37,6 @@ export default class Spawn extends StructureSpawn {
   markQueueItemAsBeingBuiltWithName(creepName) {
     let queue = this.room.memory.buildQueue;
     Object.assign(queue[0], {
-      createdThisTick: true,
       beingBuilt: true,
       name: creepName
     });

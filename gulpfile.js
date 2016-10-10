@@ -27,11 +27,11 @@ gulp.task('compile', ['eslint'], function() {
       output: {
         filename: 'main.js',
         libraryTarget: 'commonjs2',
-        sourceMapFilename: 'main.js.map',
+        //sourceMapFilename: 'main.js.map',
       },
-      cache: true,
-      debug: true,
-      devtool: 'source-map',
+      cache: false,
+      debug: false,
+      //devtool: 'source-map',
       stats: {
         colors: true,
         reasons: true,
@@ -46,7 +46,6 @@ gulp.task('compile', ['eslint'], function() {
             loader: 'babel-loader',
             query: {
               presets: [
-                require.resolve('babel-preset-react'), // React preset is needed only for flow support.
                 require.resolve('babel-preset-es2015'),
                 require.resolve('babel-preset-stage-2'),
               ],

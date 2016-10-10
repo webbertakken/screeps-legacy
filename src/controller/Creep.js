@@ -35,9 +35,17 @@ Object.assign(Creep.prototype, {
 
   origin(setter) {
     if(setter === undefined) {
-      return this.memory.origin;
+      return this.memory.origin || false;
     } else {
       return this.memory.origin = setter;
+    }
+  },
+
+  activity(setter) {
+    if(setter === undefined) {
+      return this.memory.activity || false;
+    } else {
+      return this.memory.activity = setter;
     }
   },
 
@@ -49,12 +57,8 @@ Object.assign(Creep.prototype, {
     }
   },
 
-  isOld(setter) {
-    if(setter === undefined) {
-      return !!this.memory.isOld;
-    } else {
-      return this.memory.isOld = setter;
-    }
+  isOld() {
+    return this.memory.isOld = this.ticksToLive <= 900;
   },
 
   isBeingReplaced(setter) {
@@ -64,5 +68,40 @@ Object.assign(Creep.prototype, {
       return this.memory.isBeingReplaced = setter;
     }
   },
+
+  isEmpty() {
+    return _.sum(this.carry) === 0;
+  },
+
+  carriesNoEnergy() {
+    return this.carry.energy === 0;
+  },
+
+  carriesNoResources() {
+    return _.sum(this.carry) - this.carry.energy === 0;
+  },
+
+  disassemblerLocation() {
+    if(this.memory.disassemblerLocation === undefined) {
+      this.memory.disassemblerLocation = this.pos.findClosestByRange(FIND_MY_SPAWNS).pos;
+    }
+    return this.memory.disassemblerLocation();
+  },
+
+  isNextTo(object) {
+    return this.pos.getRangeTo(object) <= 1;
+  },
+
+  isAtAttackingRangeFrom(object) {
+    return this.pos.getRangeTo(object) <= 3;
+  },
+
+  isCloseTo(object) {
+    return this.pos.getRangeTo(object) <= 5;
+  },
+
+  role() {
+    return this.memory.role || false;
+  }
 
 });
