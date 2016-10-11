@@ -3,74 +3,52 @@ import creepMapper from '../util/creepMapper';
 
 Object.assign(Creep.prototype, {
 
+  initiate() {
+    this.room.removeQueueItemByName(this.name);
+    this.origin(this.room.name);
+    this.instruct ? this.instruct() : false;
+    this.isInitiated(true);
+  },
+
   routine() {
-    if(!this.isInitiated()) {
-      this.initiate();
-    }
-    if(this.performRole) {
-      this.performRole();
-    }
+    !this.isInitiated() && this.ticksToLive ? this.initiate() : false;
+    this.performRole();
   },
 
   reMap() {
     return creepMapper.mapCreep(this);
   },
 
-  isInitiated(setter) {
-    if(setter === undefined) {
-      return !!this.memory.isInitiated;
-    } else {
-      return this.memory.isInitiated = setter;
-    }
-  },
-
-  initiate() {
-    this.room.removeQueueItemByName(this.name);
-    this.origin(this.room.name);
-    if(this.instruct) {
-      this.instruct();
-    }
-    this.isInitiated(true);
-  },
-
   origin(setter) {
-    if(setter === undefined) {
-      return this.memory.origin || false;
-    } else {
-      return this.memory.origin = setter;
-    }
+    return setter === undefined ? this.memory.origin || false : this.memory.origin = setter;
+  },
+
+  isInitiated(setter) {
+    return setter === undefined ? !!this.memory.isInitiated : this.memory.isInitiated = setter;
   },
 
   activity(setter) {
-    if(setter === undefined) {
-      return this.memory.activity || false;
-    } else {
-      return this.memory.activity = setter;
-    }
+    return setter === undefined ? this.memory.activity || false : this.memory.activity = setter;
   },
 
   isGivenInstructions(setter) {
-    if(setter === undefined) {
-      return !!this.memory.isInstructed;
-    } else {
-      return this.memory.isInstructed = setter;
-    }
+    return setter === undefined ? !!this.memory.isInstructed : this.memory.isInstructed = setter;
   },
 
   isOld() {
-    return this.memory.isOld = this.ticksToLive <= 900;
+    return this.ticksToLive <= 90;
   },
 
   isBeingReplaced(setter) {
-    if(setter === undefined) {
-      return !!this.memory.isBeingReplaced;
-    } else {
-      return this.memory.isBeingReplaced = setter;
-    }
+    return setter === undefined ? !!this.memory.isBeingReplaced : this.memory.isBeingReplaced = setter;
   },
 
   isEmpty() {
     return _.sum(this.carry) === 0;
+  },
+
+  isFull() {
+    return _.sum(this.carry) >= this.carryCapacity;
   },
 
   carriesNoEnergy() {
@@ -85,7 +63,7 @@ Object.assign(Creep.prototype, {
     if(this.memory.disassemblerLocation === undefined) {
       this.memory.disassemblerLocation = this.pos.findClosestByRange(FIND_MY_SPAWNS).pos;
     }
-    return this.memory.disassemblerLocation();
+    return this.memory.disassemblerLocation;
   },
 
   isNextTo(object) {

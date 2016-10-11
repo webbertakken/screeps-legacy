@@ -136,7 +136,6 @@ export default class Tower extends StructureTower {
 
   attackClosestTarget = function (entity, targets) {
     var target = entity.pos.findClosestByRange(targets);
-    //console.log('attacking: ' + JSON.stringify(target));
     var attackCode = entity.attack(target);
     if (attackCode != 0) {
       console.log('Attacking failed, for unknown reason with code: ' + attackCode);
@@ -145,7 +144,6 @@ export default class Tower extends StructureTower {
 
   healClosestTarget = function (entity, targets) {
     var target = entity.pos.findClosestByRange(targets);
-    //console.log('healing: ' + JSON.stringify(target));
     var healCode = entity.heal(target);
     if (healCode != 0) {
       console.log('Repairing failed, for unknown reason with code: ' + healCode);
@@ -154,7 +152,6 @@ export default class Tower extends StructureTower {
 
   repairClosestTarget = function (entity, targets) {
     var target = entity.pos.findClosestByRange(targets);
-    //console.log('repairing: ' + JSON.stringify(target));
     var repairCode = entity.repair(target);
     if (repairCode != 0) {
       console.log('Repairing failed, for unknown reason with code: ' + repairCode);

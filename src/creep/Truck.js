@@ -6,53 +6,38 @@ export default class Truck extends Creep {
     this.memory.activity = 'load';
     this.assignToClosestHarvester();
     this.isGivenInstructions(true);
-    this.say('Moap!');
   }
 
   performRole() {
-    if(this.memory.activity === 'load') {
-      this.load();
-    } else if (this.memory.activity === 'unload') {
-      this.unload();
-    } else {
-      this.say('bugged');
-    }
-  }
-
-  /**
-   *
-   * @returns {string} activity
-   */
-  adjustActivity() {
-    if(this.memory.activity === 'load' && _.sum(this.carry) >= this.carryCapacity) {
-      this.memory.activity = 'unload';
-    }
-    if(this.memory.activity === 'unload' && _.sum(this.carry) === 0) {
-      this.memory.activity = 'load';
-    }
-    return this.memory.activity;
+    this.load();
+    this.unload();
   }
 
   load() {
-    this.loadFromHarvester();
-    if(this.adjustActivity() !== 'load') {
-      this.performRole();
+    if(this.activity() === 'load') {
+      this.loadFromAssignedHarvester();
+      if(this.isFull()) {
+        this.activity('unload');
+      }
     }
   }
 
   unload() {
-    this.unloadToSpawn();
-    if(this.adjustActivity() !== 'unload') {
-      this.performRole();
+    if(this.activity() === 'unload') {
+      this.unloadToSpawns();
+      if(this.isEmpty()) {
+        this.activity('load');
+        this.load();
+      }
     }
   }
 
-  loadFromHarvester() {
+  loadFromAssignedHarvester() {
     let harvester = Game.getObjectById(this.memory.assignedHarvester);
     if(!harvester){
       return;
     }
-    let path = this.pos.findPathTo(Game.getObjectById(this.memory.assignedHarvester), {reusePath: 30});
+    let path = this.pos.findPathTo(Game.getObjectById(this.memory.assignedHarvester), {reusePath: 7});
     if( path.length > 1) {
       this.move(path[0].direction);
     } else {
@@ -63,7 +48,7 @@ export default class Truck extends Creep {
     }
   }
 
-  unloadToSpawn() {
+  unloadToSpawns() {
     let spawns = this.room.find(FIND_MY_SPAWNS).filter((spawn) => {
       return spawn.energyCapacity > spawn.energy;
     });

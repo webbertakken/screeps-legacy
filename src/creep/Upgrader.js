@@ -2,17 +2,16 @@ import '../controller/Creep';
 
 export default class Upgrader extends Creep {
 
-  instruct() {
-    this.say('++RCL;');
-  }
+  instruct() {}
 
   performRole() {
     this.upgrade();
   }
 
   upgrade() {
-    if(this.upgradeController(this.room.controller) == ERR_NOT_IN_RANGE) {
-      this.moveTo(this.room.controller);
+    let controller = _(this.room.find(FIND_STRUCTURES)).find(s => s.structureType === STRUCTURE_CONTROLLER);
+    if(this.upgradeController(controller) === ERR_NOT_IN_RANGE) {
+      this.moveTo(controller);
     }
   }
 
