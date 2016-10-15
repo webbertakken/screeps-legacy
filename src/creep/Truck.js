@@ -4,8 +4,9 @@ export default class Truck extends Creep {
 
   instruct() {
     this.memory.activity = 'load';
-    this.assignToClosestHarvester();
-    this.isGivenInstructions(true);
+    if(this.assignToClosestHarvester()) {
+      this.isGivenInstructions(true);
+    }
   }
 
   performRole() {
@@ -24,7 +25,7 @@ export default class Truck extends Creep {
 
   unload() {
     if(this.activity() === 'unload') {
-      this.unloadToSpawns();
+      this.unloadSequence();
       if(this.isEmpty()) {
         this.activity('load');
         this.load();
@@ -48,13 +49,14 @@ export default class Truck extends Creep {
     }
   }
 
-  unloadToSpawns() {
-    let spawns = this.room.find(FIND_MY_SPAWNS).filter((spawn) => {
-      return spawn.energyCapacity > spawn.energy;
-    });
-    if(spawns.length) {
-      if(this.transfer(spawns[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-        this.moveTo(spawns[0], {reusePath: 30});
+  unloadSequence() {
+    let targets = Game.rooms[this.memory.origin].getStructuresNeedingEnergy();
+    if(!targets[0]) {
+      targets = Game.rooms[this.memory.origin].getCreepsNeedingEnergy();
+    }
+    if(targets[0]) {
+      if(this.transfer(targets[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+        this.moveTo(targets[0]);
       }
     }
   }
@@ -64,7 +66,9 @@ export default class Truck extends Creep {
     if(assigner && assigner[0]) {
       this.memory.assignedHarvester = assigner[0].id;
       assigner[0].memory.assignedTruck = this.id;
+      return true;
     }
+    return false;
   }
 
 }

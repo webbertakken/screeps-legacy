@@ -57,4 +57,8 @@ export default class Spawn extends StructureSpawn {
     return target ? this.recycleCreep(target) : false ;
   }
 
+  isFull() {
+    return this.energyCapacity === this.energy;
+  }
+
 }

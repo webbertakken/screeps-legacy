@@ -6,8 +6,8 @@ Object.assign(Room.prototype, {
     !this.memory.buildQueue ? this.memory.buildQueue = [] : false ;
     !this.memory.creeps ? this.memory.creeps = {} : false ;
     this.resetSources();
-    this.memory.harvestersNeeded = this.memory.sources.length;
-    this.memory.trucksNeeded = this.memory.sources.length;
+    this.setHarvestersNeeded();
+    this.setTrucksNeeded();
     this.memory.upgradersNeeded = 1;
     this.isInitiated(true);
   },
@@ -17,6 +17,9 @@ Object.assign(Room.prototype, {
     if(Game.time % 12 === 0) {
       this.countRoles();
       this.populate();
+    }
+    if(Game.time % 30 === 0) {
+      this.checkSourcesHarvesters();
     }
   },
 
@@ -103,6 +106,20 @@ Object.assign(Room.prototype, {
     });
   },
 
+  /**
+   * @Description check if harvesters didn't die, mark as hostile, free up source
+   */
+  checkSourcesHarvesters() {
+    _.forEach(this.memory.sources, (source) => {
+      if(source.assignedHarvester && !Game.getObjectById(source.assignedHarvester)) {
+        delete source.assignedHarvester;
+        source.isGuarded = true;
+      }
+    });
+    this.setHarvestersNeeded();
+    this.setTrucksNeeded();
+  },
+
   removeQueueItemByName(creepName) {
     return _.remove(this.memory.buildQueue, q => q.name === creepName);
   },
@@ -118,5 +135,54 @@ Object.assign(Room.prototype, {
   isInitiated(setter) {
     return setter === undefined ? !!this.memory.isInitiated : this.memory.isInitiated = !!setter;
   },
+
+  getMyStructures() {
+    if(!this._myStructures) {
+      this._myStructures = this.find(FIND_MY_STRUCTURES);
+    }
+    return this._myStructures;
+  },
+
+  getStructuresNeedingEnergy() {
+    if(!this._structuresNeedingEnergy) {
+      this._structuresNeedingEnergy = _(this.getMyStructures())
+        .filter(s => s.energyCapacity && s.energyCapacity > s.energy)
+        .value();
+    }
+    return this._structuresNeedingEnergy;
+  },
+
+  getMyCreeps() {
+    if(!this._myCreeps) {
+      this._myCreeps = this.find(FIND_MY_CREEPS);
+    }
+    return this._myCreeps;
+  },
+
+  getCreepsNeedingEnergy() {
+    if(!this._creepsNeedingEnergy) {
+      this._creepsNeedingEnergy = _(this.getMyCreeps())
+        .filter(c => !c.isOld() && !c.isFull() && (c.memory.role === 'upgrader' || c.memory.role === 'builder'))
+        .value();
+    }
+    return this._creepsNeedingEnergy;
+  },
+
+  getTargetsNeedingEnergy() {
+    if(!this._targetsNeedingEnergy) {
+      this._targetsNeedingEnergy = []
+        .concat(this.getStructuresNeedingEnergy())
+        .concat(this.getCreepsNeedingEnergy());
+    }
+    return this._targetsNeedingEnergy;
+  },
+
+  setHarvestersNeeded() {
+    return this.memory.harvestersNeeded = _.filter(this.memory.sources, s => !s.isGuarded).length;
+  },
+
+  setTrucksNeeded() {
+    return this.memory.trucksNeeded = this.memory.harvestersNeeded;
+  }
 
 });

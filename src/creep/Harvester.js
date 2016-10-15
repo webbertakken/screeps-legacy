@@ -4,8 +4,9 @@ export default class Harvester extends Creep {
 
   instruct() {
     this.activity('harvesting');
-    this.assignToClosestFreeSource();
-    this.isGivenInstructions(true);
+    if(this.assignToClosestFreeSource()) {
+      this.isGivenInstructions(true);
+    }
   }
 
   performRole() {
@@ -23,7 +24,7 @@ export default class Harvester extends Creep {
       if(this.isAssignedToSource()) {
         this.unassignFromSource();
       }
-      if (this.replacementHasArrived()) {
+      if (this.replacementHasArrived() || this.isVeryOld()) {
         this.activity('emptying');
       }
     }
@@ -88,11 +89,13 @@ export default class Harvester extends Creep {
   }
 
   assignToClosestFreeSource() {
-    const target = _(this.room.memory.sources).find(s => !s.assignedHarvester);
+    const target = _.find(this.room.memory.sources, s => !s.isGuarded && !s.assignedHarvester);
     if(target) {
       this.targetSource(target.id);
       target.assignedHarvester = this.id;
+      return true;
     }
+    return false;
   }
 
   unassignFromSource() {

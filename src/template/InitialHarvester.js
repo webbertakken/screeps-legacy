@@ -1,6 +1,7 @@
 module.exports = {
-  cost: 250,
+  cost: 300,
   body: [
+    MOVE,
     MOVE,
     WORK,
     WORK,

@@ -39,6 +39,10 @@ Object.assign(Creep.prototype, {
     return this.ticksToLive <= 90;
   },
 
+  isVeryOld() {
+    return this.ticksToLive <= 35;
+  },
+
   isBeingReplaced(setter) {
     return setter === undefined ? !!this.memory.isBeingReplaced : this.memory.isBeingReplaced = setter;
   },
