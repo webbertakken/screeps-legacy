@@ -1,9 +1,3 @@
 import { Source } from 'screeps-globals';
 
-Object.assign(Source.prototype, {
-
-  routine() {
-
-  },
-
-});
+Object.assign(Source.prototype, {});

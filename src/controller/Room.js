@@ -9,11 +9,12 @@ Object.assign(Room.prototype, {
     this.setHarvestersNeeded();
     this.setTrucksNeeded();
     this.memory.upgradersNeeded = 1;
+    this.memory.buildersNeeded = 4;
     this.isInitiated(true);
   },
 
   routine() {
-    this.isInitiated() ? false : this.initiate() ;
+    !this.isInitiated() ? this.initiate() : false;
     if(Game.time % 12 === 0) {
       this.countRoles();
       this.populate();
@@ -24,6 +25,7 @@ Object.assign(Room.prototype, {
   },
 
   populate() {
+    // don't overfill
     if (this.memory.buildQueue.length >= 5) {
       return;
     }
@@ -35,14 +37,20 @@ Object.assign(Room.prototype, {
       this.addCreepToQueue('truck', 'starterTruck', {});
     }
     // normal queue fill
-    if (this.memory.creeps.harvester < this.memory.harvestersNeeded) {
-      this.addCreepToQueue('harvester', 'initialHarvester', {});
-    }
-    if (this.memory.creeps.truck < this.memory.trucksNeeded) {
-      this.addCreepToQueue('truck', 'initialTruck', {});
-    }
-    if (!this.memory.creeps.upgrader || this.memory.creeps.upgrader < this.memory.upgradersNeeded) {
-      this.addCreepToQueue('upgrader', 'initialUpgrader', {});
+    if(this.energyCapacityAvailable < 550) {
+      if (this.memory.creeps.harvester < this.memory.harvestersNeeded) {
+        this.addCreepToQueue('harvester', 'initialHarvester', {});
+      }
+      if (this.memory.creeps.truck < this.memory.trucksNeeded) {
+        this.addCreepToQueue('truck', 'initialTruck', {});
+      }
+      if (!this.memory.creeps.upgrader || this.memory.creeps.upgrader < this.memory.upgradersNeeded) {
+        this.addCreepToQueue('upgrader', 'initialUpgrader', {});
+      }
+      if (this.controller && this.controller.level > 1 && !this.memory.creeps.builder ||
+        this.memory.creeps.builder < this.memory.buildersNeeded) {
+        this.addCreepToQueue('builder', 'initialBuilder', {});
+      }
     }
   },
 
@@ -121,24 +129,45 @@ Object.assign(Room.prototype, {
   },
 
   removeQueueItemByName(creepName) {
-    return _.remove(this.memory.buildQueue, q => q.name === creepName);
+    return _(this.memory.buildQueue).remove(q => q.name === creepName).value();
   },
 
   findHarvesters() {
-    return this.find(FIND_MY_CREEPS).filter(c => c.memory.role === 'harvester');
+    return _(this.find(FIND_MY_CREEPS)).filter(c => c.memory.role === 'harvester').value();
   },
 
   findLonelyHarvesters() {
-    return _.filter(this.findHarvesters(), h => !h.memory.assignedTruck);
+    return _(this.findHarvesters()).filter(h => !h.memory.assignedTruck).value();
   },
 
   isInitiated(setter) {
     return setter === undefined ? !!this.memory.isInitiated : this.memory.isInitiated = !!setter;
   },
 
+  getAllConstructionSites() {
+    if(!this._constructionSites) {
+      this._constructionSites = this.find(FIND_CONSTRUCTION_SITES);
+    }
+    return this._constructionSites;
+  },
+
+  getMyConstructionSites() {
+    if(!this._myConstructionSites) {
+      this._myConstructionSites = _(this.getAllConstructionSites()).filter(cs => cs.my).value();
+    }
+    return this._myConstructionSites;
+  },
+
+  getAllStructures() {
+    if(!this._allStructures) {
+      this._allStructures = this.find(FIND_STRUCTURES);
+    }
+    return this._allStructures;
+  },
+
   getMyStructures() {
     if(!this._myStructures) {
-      this._myStructures = this.find(FIND_MY_STRUCTURES);
+      this._myStructures = _(this.getAllStructures()).filter(s => s.my).value();
     }
     return this._myStructures;
   },
@@ -146,10 +175,20 @@ Object.assign(Room.prototype, {
   getStructuresNeedingEnergy() {
     if(!this._structuresNeedingEnergy) {
       this._structuresNeedingEnergy = _(this.getMyStructures())
-        .filter(s => s.energyCapacity && s.energyCapacity > s.energy)
-        .value();
+        .filter(s => s.energyCapacity && s.energyCapacity > s.energy).value();
     }
     return this._structuresNeedingEnergy;
+  },
+
+  getStorageWithEnergy() {
+    if(!this._storageWithEnergy) {
+      this._storageWithEnergy = _(this.getAllStructures()).filter((s) => {
+        return s.store && RESOURCE_ENERGY in s.store &&
+        s.structureType === STRUCTURE_CONTAINER ||
+        s.structureType === STRUCTURE_STORAGE;
+      }).value();
+    }
+    return this._storageWithEnergy;
   },
 
   getMyCreeps() {
@@ -163,6 +202,7 @@ Object.assign(Room.prototype, {
     if(!this._creepsNeedingEnergy) {
       this._creepsNeedingEnergy = _(this.getMyCreeps())
         .filter(c => !c.isOld() && !c.isFull() && (c.memory.role === 'upgrader' || c.memory.role === 'builder'))
+        .sortBy('carry.energy')
         .value();
     }
     return this._creepsNeedingEnergy;
@@ -178,7 +218,7 @@ Object.assign(Room.prototype, {
   },
 
   setHarvestersNeeded() {
-    return this.memory.harvestersNeeded = _.filter(this.memory.sources, s => !s.isGuarded).length;
+    return this.memory.harvestersNeeded = _(this.memory.sources).filter(s => !s.isGuarded).value().length;
   },
 
   setTrucksNeeded() {

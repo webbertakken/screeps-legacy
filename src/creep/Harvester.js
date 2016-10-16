@@ -50,10 +50,8 @@ export default class Harvester extends Creep {
    * @Description i'm old, so i'm emptying
    */
   task_empty() {
-    if(this.activity() === 'emptying') {
-      if (this.isEmpty()) {
-        this.activity('salvaging');
-      }
+    if(this.activity() === 'emptying' && this.isEmpty()) {
+      this.activity('salvaging');
     }
   }
 
@@ -71,7 +69,10 @@ export default class Harvester extends Creep {
 
   unassignTruck() {
     if(this.assignedTruck()) {
-      Game.getObjectById(this.assignedTruck()).memory.assignedHarvester = false;
+      const assignedTruck = Game.getObjectById(this.assignedTruck());
+      if(assignedTruck) {
+        assignedTruck.memory.assignedHarvester = false;
+      }
       this.assignedTruck(false);
     }
   }

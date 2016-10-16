@@ -20,7 +20,7 @@ export default class Spawn extends StructureSpawn {
       return;
     }
     Object.assign(item.memory, bp.memory);
-    let creepName = this.createCreepWithRole(bp.body, bp.name, item.memory);
+    const creepName = this.createCreepWithRole(bp.body, bp.name, item.memory);
     if(creepName) {
       this.addCountToRole(item.role);
       this.markQueueItemAsBeingBuiltWithName(creepName);
@@ -36,7 +36,7 @@ export default class Spawn extends StructureSpawn {
 
   // set beingBuilt to true, add name to watch completion for and move to end of queue
   markQueueItemAsBeingBuiltWithName(creepName) {
-    let queue = this.room.memory.buildQueue;
+    const queue = this.room.memory.buildQueue;
     Object.assign(queue[0], {
       beingBuilt: true,
       name: creepName
@@ -49,12 +49,10 @@ export default class Spawn extends StructureSpawn {
   }
 
   recycleCreeps() {
-    // OK	0	The operation has been scheduled successfully.
-    // ERR_NOT_OWNER	-1	You are not the owner of this spawn or the target creep.
-    // ERR_INVALID_TARGET	-7	The specified target object is not a creep.
-    // ERR_NOT_IN_RANGE	-9	The target creep is too far away.
-    let target = _(this.pos.findInRange(FIND_MY_CREEPS, 1)).filter(c => c.disassemblerLocation !== undefined)[0];
-    return target ? this.recycleCreep(target) : false ;
+    const target = _.find(this.pos.findInRange(FIND_MY_CREEPS, 1), c => c.memory.disassemblerLocation);
+    if(target) {
+      this.recycleCreep(target);
+    }
   }
 
   isFull() {

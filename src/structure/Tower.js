@@ -7,8 +7,7 @@ export default class Tower extends StructureTower {
    */
 
   performRole() {
-
-    var targets = {};
+    let targets = {};
     var room = this.room;
 
     /**
@@ -17,13 +16,11 @@ export default class Tower extends StructureTower {
 
     // things to always shoot at
     if (this.energy > 0) {
-
       targets = room.find(FIND_HOSTILE_CREEPS);
       if (targets.length) {
         this.attackClosestTarget(this, targets);
         return;
       }
-
       // attack enemy military structures //STRUCTURE_TOWER
       targets = room.find(FIND_HOSTILE_STRUCTURES, {
         filter: function (structure) {
@@ -34,20 +31,16 @@ export default class Tower extends StructureTower {
         this.attackClosestTarget(this, targets);
         return;
       }
-
     }
 
     if (this.energy > this.energyCapacity / 4) {
-
       // attack hostile construction sites //FIND_HOSTILE_CONSTRUCTION_SITES
       targets = room.find(FIND_HOSTILE_CONSTRUCTION_SITES);
       if (targets.length) {
         this.attackClosestTarget(this, targets);
         return;
       }
-
     }
-
     if (this.energy > this.energyCapacity / 2) {
 
       // attack enemy primary structures //STRUCTURE_TOWER
@@ -56,27 +49,22 @@ export default class Tower extends StructureTower {
         this.attackClosestTarget(this, targets);
         return;
       }
-
       // attack enemy //FIND_HOSTILE_STRUCTURES
       targets = room.find(FIND_HOSTILE_STRUCTURES);
       if (targets.length) {
         this.attackClosestTarget(this, targets);
       }
-
       targets = room.find(FIND_MY_STRUCTURES, {
         filter: function (structure) {
           return structure.structureType == STRUCTURE_TOWER && structure.hitsMax > structure.hits;
         },
       });
       if (targets.length) {
-        this.repairClosestTarget(this, targets);
-        return;
+        return this.repairClosestTarget(this, targets);
       }
-
     }
 
     if (this.energy > (this.energyCapacity / 4) * 3) {
-
       // heal friendly non-military creeps
       targets = room.find(FIND_MY_CREEPS, {
         filter: function (creep) {
@@ -84,10 +72,8 @@ export default class Tower extends StructureTower {
         },
       });
       if (targets.length) {
-        this.healClosestTarget(this, targets);
-        return;
+        return this.healClosestTarget(this, targets);
       }
-
       // repair friendly buildings
       targets = room.find(FIND_MY_STRUCTURES, {
         filter: function (structure) {
@@ -95,10 +81,8 @@ export default class Tower extends StructureTower {
         }
       });
       if (targets.length) {
-        this.repairClosestTarget(this, targets);
-        return;
+        return this.repairClosestTarget(this, targets);
       }
-
       // repair roads
       targets = room.find(FIND_STRUCTURES, {
         filter: function (structure) {
@@ -106,14 +90,11 @@ export default class Tower extends StructureTower {
         },
       });
       if (targets.length) {
-        this.repairClosestTarget(this, targets);
-        return;
+        return this.repairClosestTarget(this, targets);
       }
-
       // if we're not building anything, distribute between walls and ramparts
       var constructions = room.find(FIND_CONSTRUCTION_SITES);
       if (constructions.length < 1) {
-
         // repair ramparts and walls
         targets = room.find(FIND_STRUCTURES, {
           filter: function (structure) {
@@ -124,14 +105,11 @@ export default class Tower extends StructureTower {
           }
         });
         if (targets.length) {
-          this.repairLowestTarget(this, targets);
-          return;
+          return this.repairLowestTarget(this, targets);
         }
-
       }
-
     }
-
+    return targets;
   }
 
   attackClosestTarget = function (entity, targets) {
