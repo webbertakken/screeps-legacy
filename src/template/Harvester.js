@@ -1,14 +1,24 @@
-module.exports = {
-  cost: 600,
-  body: [
+import Blueprint from './_Blueprint';
+
+class Harvester extends Blueprint {
+
+  name = 'harvester' + _.random(1000, 1999);
+
+  memory = {};
+
+  body = [
     MOVE,
     WORK,
+  ];
+
+  additionalParts = [
     WORK,
     WORK,
     WORK,
     WORK,
-    CARRY
-  ],
-  name: 'harvester' + _.random(1000, 1999),
-  memory: {},
-};
+    MOVE
+  ];
+
+}
+
+export default Harvester;

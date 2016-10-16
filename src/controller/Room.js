@@ -9,7 +9,7 @@ Object.assign(Room.prototype, {
     this.setHarvestersNeeded();
     this.setTrucksNeeded();
     this.memory.upgradersNeeded = 1;
-    this.memory.buildersNeeded = 4;
+    this.memory.buildersNeeded = 2;
     this.isInitiated(true);
   },
 
@@ -25,32 +25,46 @@ Object.assign(Room.prototype, {
   },
 
   populate() {
-    // don't overfill
-    if (this.memory.buildQueue.length >= 5) {
-      return;
+    if (this.memory.buildQueue.length <= 2) {
+      this.queueInitialCreeps();
+      this.queueHarvesters();
+      this.queueTrucks();
+      this.queueUpgraders();
+      this.queueBuilders();
     }
-    // initial creeps
+  },
+
+  queueInitialCreeps() {
     if (!this.memory.creeps.harvester) {
-      this.addCreepToQueue('harvester', 'starterHarvester', {});
+      this.addCreepToQueue('harvester', 'harvester', {}, 150);
     }
     if (!this.memory.creeps.truck) {
-      this.addCreepToQueue('truck', 'starterTruck', {});
+      this.addCreepToQueue('truck', 'truck', {}, 150);
     }
-    // normal queue fill
-    if(this.energyCapacityAvailable < 550) {
-      if (this.memory.creeps.harvester < this.memory.harvestersNeeded) {
-        this.addCreepToQueue('harvester', 'initialHarvester', {});
-      }
-      if (this.memory.creeps.truck < this.memory.trucksNeeded) {
-        this.addCreepToQueue('truck', 'initialTruck', {});
-      }
-      if (!this.memory.creeps.upgrader || this.memory.creeps.upgrader < this.memory.upgradersNeeded) {
-        this.addCreepToQueue('upgrader', 'initialUpgrader', {});
-      }
-      if (this.controller && this.controller.level > 1 && !this.memory.creeps.builder ||
-        this.memory.creeps.builder < this.memory.buildersNeeded) {
-        this.addCreepToQueue('builder', 'initialBuilder', {});
-      }
+  },
+
+  queueHarvesters() {
+    if (this.memory.creeps.harvester < this.memory.harvestersNeeded) {
+      this.addCreepToQueue('harvester', 'harvester', {}, this.energyCapacityAvailable);
+    }
+  },
+
+  queueTrucks() {
+    if (this.memory.creeps.truck < this.memory.trucksNeeded) {
+      this.addCreepToQueue('truck', 'truck', {}, this.energyCapacityAvailable);
+    }
+  },
+
+  queueUpgraders() {
+    if (!this.memory.creeps.upgrader || this.memory.creeps.upgrader < this.memory.upgradersNeeded) {
+      this.addCreepToQueue('upgrader', 'upgrader', {}, this.energyCapacityAvailable);
+    }
+  },
+
+  queueBuilders() {
+    if (this.controller && this.controller.level > 1 && !this.memory.creeps.builder ||
+      this.memory.creeps.builder < this.memory.buildersNeeded) {
+      this.addCreepToQueue('builder', 'builder', {}, this.energyCapacityAvailable);
     }
   },
 
@@ -60,13 +74,15 @@ Object.assign(Room.prototype, {
    * @param role      {String}  Role that creep will get
    * @param template  {String}  Reference to template to generate creep from
    * @param memory    {Object}  Memory to assign to creep on spawn.
+   * @param maxEnergy {Number}  Maximum amount of energy the room can spend
    */
-  addCreepToQueue(role, template, memory) {
+  addCreepToQueue(role, template, memory, maxEnergy) {
     Object.assign(memory, { role: role });
     this.memory.buildQueue.push({
       role: role,
       template: template,
       memory: memory,
+      maxEnergy: maxEnergy,
     });
     this.memory.creeps[role] = this.memory.creeps[role] + 1 || 1;
   },
@@ -77,13 +93,15 @@ Object.assign(Room.prototype, {
    * @param role      {String}  Role that creep will get
    * @param template  {String}  Reference to template to generate creep from
    * @param memory    {Object}  Memory to assign to creep on spawn.
+   * @param maxEnergy {Number}  Maximum amount of energy the room can spend
    */
-  addPriorityCreepToQueue(role, template, memory) {
+  addPriorityCreepToQueue(role, template, memory, maxEnergy) {
     Object.assign(memory, { role: role });
     this.memory.buildQueue.unshift({
       role: role,
       template: template,
       memory: memory,
+      maxEnergy: maxEnergy,
     });
     this.memory.creeps[role] = this.memory.creeps[role] + 1 || 1;
   },
@@ -175,7 +193,7 @@ Object.assign(Room.prototype, {
   getStructuresNeedingEnergy() {
     if(!this._structuresNeedingEnergy) {
       this._structuresNeedingEnergy = _(this.getMyStructures())
-        .filter(s => s.energyCapacity && s.energyCapacity > s.energy).value();
+        .filter(s => s.energyCapacity && s.energyCapacity > s.energy && s.structureType !== STRUCTURE_LINK).value();
     }
     return this._structuresNeedingEnergy;
   },

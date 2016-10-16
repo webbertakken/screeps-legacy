@@ -24,7 +24,6 @@ class StructureMapper {
       const room = Game.rooms[roomName];
       Array.prototype.push.apply(legacyStructures, room.find(FIND_STRUCTURES));
     });
-
     return legacyStructures.map(this.mapStructure);
   }
 

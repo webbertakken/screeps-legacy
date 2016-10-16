@@ -1,28 +1,44 @@
 import '../controller/Structure';
-import template from '../controller/Template';
+
+import Builder from '../template/Builder';
+import Harvester from '../template/Harvester';
+import Truck from '../template/Truck';
+import Upgrader from '../template/Upgrader';
+
+const blueprintMap = {
+  builder: Builder,
+  harvester: Harvester,
+  truck: Truck,
+  upgrader: Upgrader,
+};
 
 export default class Spawn extends StructureSpawn {
 
   performRole() {
-    if(this.room.memory.buildQueue && this.room.memory.buildQueue.length) {
-      this.buildQueuedCreep();
-    }
+    this.buildQueuedCreep();
     this.recycleCreeps();
   }
 
   buildQueuedCreep(){
-    if(this.room.memory.buildQueue[0].beingBuilt === true) {
+    if(this.spawning || !this.room.memory.buildQueue[0] || this.room.memory.buildQueue[0].beingBuilt) {
       return;
     }
-    const item = this.room.memory.buildQueue[0];
-    const bp   = template[item.template];
-    if(bp.cost > this.room.energyAvailable) {
+    const queueItem = this.room.memory.buildQueue[0];
+    const Constructor = blueprintMap[queueItem.template];
+    if (!Constructor) {
+      console.log('blueprint for ' + queueItem.template + ' does not exist.');
       return;
     }
-    Object.assign(item.memory, bp.memory);
-    const creepName = this.createCreepWithRole(bp.body, bp.name, item.memory);
+    var blueprint = new Constructor();
+    const energy = queueItem.maxEnergy <= blueprint.cost() ? queueItem.maxEnergy : blueprint.cost();
+    if(energy > this.room.energyAvailable) {
+      return;
+    }
+    Object.assign(blueprint.memory, queueItem.memory);
+    const creepName = this.createCreepWithRole(blueprint.generateBody(energy), blueprint.name, blueprint.memory);
     if(creepName) {
-      this.addCountToRole(item.role);
+      // instant-sync
+      this.addCountToRole(queueItem.role);
       this.markQueueItemAsBeingBuiltWithName(creepName);
     }
   }

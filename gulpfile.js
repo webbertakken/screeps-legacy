@@ -30,7 +30,7 @@ gulp.task('compile', ['eslint'], function() {
         //sourceMapFilename: 'main.js.map',
       },
       cache: false,
-      debug: false,
+      debug: true,
       //devtool: 'source-map',
       stats: {
         colors: true,
