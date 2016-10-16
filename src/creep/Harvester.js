@@ -27,6 +27,13 @@ export default class Harvester extends Creep {
       if (this.replacementHasArrived() || this.isVeryOld()) {
         this.activity('emptying');
       }
+    } else {
+      if(!this.isAssignedToSource()) {
+        this.assignToClosestFreeSource();
+      }
+      if(!Game.getObjectById(this.assignedTruck())) {
+        this.unassignTruck();
+      }
     }
   }
 
@@ -51,19 +58,8 @@ export default class Harvester extends Creep {
    */
   task_empty() {
     if(this.activity() === 'emptying' && this.isEmpty()) {
-      this.activity('salvaging');
-    }
-  }
-
-  /**
-   * @Description i'm old and empty, time to salvage myself
-   */
-  task_salvage() {
-    if (this.activity() === 'salvaging') {
       this.unassignTruck();
-      if(!this.isNextTo(this.disassemblerLocation())) {
-        this.moveTo(this.disassemblerLocation().x, this.disassemblerLocation().y);
-      }
+      this.activity('salvaging');
     }
   }
 

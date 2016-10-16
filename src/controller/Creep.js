@@ -15,6 +15,17 @@ Object.assign(Creep.prototype, {
     this.performRole();
   },
 
+  /**
+   * @Description i'm old and empty, time to salvage myself
+   */
+  task_salvage() {
+    if (this.activity() === 'salvaging') {
+      if(!this.isNextTo(this.disassemblerLocation())) {
+        this.moveTo(this.disassemblerLocation().x, this.disassemblerLocation().y);
+      }
+    }
+  },
+
   reMap() {
     return creepMapper.mapCreep(this);
   },
@@ -84,6 +95,6 @@ Object.assign(Creep.prototype, {
 
   role() {
     return this.memory.role || false;
-  }
+  },
 
 });

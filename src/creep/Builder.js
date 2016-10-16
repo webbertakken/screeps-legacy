@@ -7,16 +7,9 @@ export default class Builder extends Creep {
   }
 
   performRole() {
-    this.MOTTest();
     this.task_load();
     this.task_build();
     this.task_salvage();
-  }
-
-  MOTTest() {
-    if(Game.time % 30 === 0 && this.isOld()) {
-      this.activity('emptying');
-    }
   }
 
   /**
@@ -49,12 +42,4 @@ export default class Builder extends Creep {
     }
   }
 
-  /**
-   * @Description i'm old and empty, time to salvage myself
-   */
-  task_salvage() {
-    if (this.activity() === 'salvaging' && !this.isNextTo(this.disassemblerLocation())) {
-      this.moveTo(this.disassemblerLocation().x, this.disassemblerLocation().y);
-    }
-  }
 }

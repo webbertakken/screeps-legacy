@@ -12,6 +12,7 @@ export default class Truck extends Creep {
   performRole() {
     this.load();
     this.unload();
+    this.salvage();
   }
 
   load() {
@@ -27,10 +28,19 @@ export default class Truck extends Creep {
     if(this.activity() === 'unload') {
       this.unloadSequence();
       if(this.isEmpty()) {
-        this.activity('load');
-        this.load();
+        if(this.isOld()) {
+          this.unassignFromHarvester();
+          this.activity('salvaging');
+        } else {
+          this.activity('load');
+          this.load();
+        }
       }
     }
+  }
+
+  salvage() {
+
   }
 
   loadFromAssignedHarvester() {
@@ -63,11 +73,26 @@ export default class Truck extends Creep {
   assignToClosestHarvester() {
     const assigner = this.room.findLonelyHarvesters();
     if(assigner && assigner[0]) {
-      this.memory.assignedHarvester = assigner[0].id;
+      this.assignedHarvester(assigner[0].id);
       assigner[0].memory.assignedTruck = this.id;
       return true;
     }
     return false;
   }
+
+  unassignFromHarvester() {
+    if(this.memory.assignedHarvester) {
+      const harvester = Game.getObjectById(this.memory.assignedHarvester);
+      if(harvester) {
+        harvester.unassignTruck();
+      }
+      delete this.memory.assignedHarvester;
+    }
+  }
+
+  assignedHarvester(setter) {
+    return setter === undefined ? this.memory.assignedHarvester : this.memory.assignedHarvester = setter;
+  }
+
 
 }
