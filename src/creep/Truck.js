@@ -45,12 +45,12 @@ export default class Truck extends Creep {
   }
 
   loadFromAssignedHarvester() {
-    const harvester = Game.getObjectById(this.memory.assignedHarvester);
+    const harvester = Game.getObjectById(this.assignedHarvester());
     if(!harvester){
       this.assignToClosestHarvester();
       return;
     }
-    const path = this.pos.findPathTo(Game.getObjectById(this.memory.assignedHarvester), {reusePath: 7});
+    const path = this.pos.findPathTo(Game.getObjectById(this.assignedHarvester()), {reusePath: 7});
     if( path.length > 1) {
       this.move(path[0].direction);
     } else {
@@ -82,12 +82,12 @@ export default class Truck extends Creep {
   }
 
   unassignFromHarvester() {
-    if(this.memory.assignedHarvester) {
-      const harvester = Game.getObjectById(this.memory.assignedHarvester);
+    if(this.assignedHarvester()) {
+      const harvester = Game.getObjectById(this.assignedHarvester());
       if(harvester) {
-        harvester.unassignTruck();
+        harvester.memory.assignedTruck = false;
       }
-      delete this.memory.assignedHarvester;
+      this.assignedHarvester(false);
     }
   }
 
