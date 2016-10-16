@@ -1,3 +1,4 @@
+import { Creep } from 'screeps-globals';
 import '../controller/Creep';
 
 export default class Truck extends Creep {
@@ -93,6 +94,5 @@ export default class Truck extends Creep {
   assignedHarvester(setter) {
     return setter === undefined ? this.memory.assignedHarvester : this.memory.assignedHarvester = setter;
   }
-
 
 }
