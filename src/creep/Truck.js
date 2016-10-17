@@ -66,14 +66,9 @@ export default class Truck extends Creep {
     if(!targets[0]) {
       targets = Game.rooms[this.memory.origin].getCreepsNeedingEnergy();
     }
-    if(targets[0] && this.transfer(targets[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-      this.moveTo(targets[0]);
-    }
-    if(targets[1]) {
-      this.transfer(targets[1], RESOURCE_ENERGY);
-    }
-    if(targets[2]) {
-      this.transfer(targets[2], RESOURCE_ENERGY);
+    const target = this.pos.findClosestByPath(targets);
+    if(target && this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+      this.moveTo(target);
     }
   }
 

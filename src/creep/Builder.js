@@ -22,7 +22,7 @@ export default class Builder extends Creep {
       if(storage[0] && this.withdraw(storage[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
         this.moveTo(storage[0]);
       }
-      if(this.isFull()) {
+      if(this.isGoodAsFull()) {
         this.activity('building');
       }
     }

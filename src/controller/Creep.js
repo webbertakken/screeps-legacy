@@ -66,6 +66,10 @@ Object.assign(Creep.prototype, {
     return _.sum(this.carry) >= this.carryCapacity;
   },
 
+  isGoodAsFull() {
+    return _.sum(this.carry) + this.carryCapacity/3*2 >= this.carryCapacity;
+  },
+
   carriesNoEnergy() {
     return this.carry.energy === 0;
   },

@@ -225,7 +225,7 @@ Object.assign(Room.prototype, {
     if(!this._creepsNeedingEnergy) {
       this._creepsNeedingEnergy = _(this.getMyCreeps())
         .filter(c => !c.isOld() && !c.isFull() && (c.memory.role === 'upgrader' || c.memory.role === 'builder'))
-        .sortBy(c => (c.carry.energy+20) / c.carryCapacity)
+        .sortBy(c => c.carry.energy / c.carryCapacity)
         .value();
     }
     return this._creepsNeedingEnergy;
