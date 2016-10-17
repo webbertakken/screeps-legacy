@@ -53,10 +53,15 @@ Object.assign(Room.prototype, {
     if (this.memory.creeps.truck < this.memory.trucksNeeded) {
       this.addCreepToQueue('truck', 'truck', {}, this.energyCapacityAvailable);
     }
+    if (this.controller.level === 2) {
+      this.memory.upgradersNeeded = 3;
+    }
   },
 
   queueUpgraders() {
-    if (!this.memory.creeps.upgrader || this.memory.creeps.upgrader < this.memory.upgradersNeeded) {
+    if (!this.memory.creeps.upgrader || this.memory.creeps.upgrader < this.memory.upgradersNeeded &&
+      this.find(FIND_MY_CONSTRUCTION_SITES).length
+    ) {
       this.addCreepToQueue('upgrader', 'upgrader', {}, this.energyCapacityAvailable);
     }
   },

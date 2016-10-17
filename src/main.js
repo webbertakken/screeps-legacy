@@ -35,5 +35,10 @@ export function loop() {
     _.forEach(structureMapper.structures(), (structure) => {
       structure.routine();
     });
+    // Clean Memory
+    if(Game.time % 100 === 0) {
+      Game.cleanMemoryCreeps();
+      Game.cleanMemoryRooms();
+    }
   });
 }
