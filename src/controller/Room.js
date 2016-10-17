@@ -9,7 +9,7 @@ Object.assign(Room.prototype, {
     this.setHarvestersNeeded();
     this.setTrucksNeeded();
     this.memory.upgradersNeeded = 1;
-    this.memory.buildersNeeded = 2;
+    this.memory.buildersNeeded = 1;
     this.isInitiated(true);
   },
 
@@ -54,7 +54,7 @@ Object.assign(Room.prototype, {
       this.addCreepToQueue('truck', 'truck', {}, this.energyCapacityAvailable);
     }
     if (this.controller.level === 2) {
-      this.memory.upgradersNeeded = 3;
+      this.memory.upgradersNeeded = 2;
     }
   },
 
