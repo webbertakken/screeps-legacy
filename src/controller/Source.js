@@ -12,7 +12,6 @@ Object.assign(Source.prototype, {
       'id': this.id,
       'energyCapacity': this.energyCapacity,
       'pos': this.pos,
-      'miningSpot': this.findBestMiningSpot(),
     });
     this.putSourceFlag();
   },
