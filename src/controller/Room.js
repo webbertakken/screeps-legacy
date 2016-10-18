@@ -5,11 +5,11 @@ Object.assign(Room.prototype, {
   initiate() {
     !this.memory.buildQueue ? this.memory.buildQueue = [] : false ;
     !this.memory.creeps ? this.memory.creeps = {} : false ;
-    this.resetSources();
+    this.initiateSources();
     this.setHarvestersNeeded();
     this.setTrucksNeeded();
-    this.memory.upgradersNeeded = 1;
-    this.memory.buildersNeeded = 1;
+    this.setUpgradersNeeded();
+    this.setBuildersNeeded();
     this.isInitiated(true);
   },
 
@@ -126,14 +126,10 @@ Object.assign(Room.prototype, {
   /**
    * @Description reset and fill memory.sources with the sources in this room
    */
-  resetSources() {
+  initiateSources() {
     this.memory.sources = [];
     _.forEach(this.find(FIND_SOURCES), (source) => {
-      this.memory.sources.push({
-        'id': source.id,
-        'energyCapacity': source.energyCapacity,
-        'pos': source.pos,
-      });
+      source.initiate();
     });
   },
 
@@ -246,6 +242,14 @@ Object.assign(Room.prototype, {
 
   setTrucksNeeded() {
     return this.memory.trucksNeeded = this.memory.harvestersNeeded;
+  },
+
+  setUpgradersNeeded() {
+    return this.memory.upgradersNeeded = 1;
+  },
+
+  setBuildersNeeded() {
+    return this.memory.builderNeeded = 1;
   }
 
 });

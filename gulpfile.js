@@ -27,11 +27,11 @@ gulp.task('compile', ['eslint'], function() {
       output: {
         filename: 'main.js',
         libraryTarget: 'commonjs2',
-        //sourceMapFilename: 'main.js.map',
+        sourceMapFilename: 'main.js.map',
       },
       cache: false,
       debug: true,
-      //devtool: 'source-map',
+      devtool: 'source-map',
       stats: {
         colors: true,
         reasons: true,

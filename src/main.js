@@ -24,17 +24,29 @@ export function loop() {
   profiler.wrap(() => {
     game.init();
     // Creeps (Mapped by role)
-    _.forEach(creepMapper.creeps(), (creep) => {
-      creep.routine();
-    });
+    try {
+      _.forEach(creepMapper.creeps(), (creep) => {
+        creep.routine();
+      });
+    } catch (e) {
+      console.log('Error in creep: ' + e.message);
+    }
     // Rooms
-    _.forEach(Object.keys(Game.rooms), (roomName) => {
-      Game.rooms[roomName].routine();
-    });
+    try {
+      _.forEach(Object.keys(Game.rooms), (roomName) => {
+        Game.rooms[roomName].routine();
+      });
+    } catch (e) {
+      console.log('Error in room: ' + e.message);
+    }
     //Structures (Mapped by structureType)
-    _.forEach(structureMapper.structures(), (structure) => {
-      structure.routine();
-    });
+    try {
+      _.forEach(structureMapper.structures(), (structure) => {
+        structure.routine();
+      });
+    } catch (e) {
+      console.log('Error in structure: ' + e.message);
+    }
     // Clean Memory
     if(Game.time % 100 === 0) {
       Game.cleanMemoryCreeps();
