@@ -25,7 +25,6 @@ Object.assign(Room.prototype, {
       this.convertBuildFlags();
     }
     if(Game.time % 12 === 0) {
-      this.updateRoleCounts();
       this.fillBuildQueue();
     }
     if((Game.time-2) % 12 === 0) {
@@ -34,10 +33,23 @@ Object.assign(Room.prototype, {
   },
 
   /**
+   * @description Counts active creeps (except old) + queued creeps and updates room.memory, adding counts, cleaning
+   *              up vanished roles.
+   */
+  updateRoleCounts() {
+    this.memory.creeps = _(this.find(FIND_MY_CREEPS))
+      .filter(c => c.isInitiated() && !c.isOld())
+      .concat(this.memory.buildQueue)
+      .countBy('memory.role')
+      .value();
+  },
+
+  /**
    * @description Add types of creeps to buildQueue in priority order
    * @return {Boolean} Has anything been added to the queue?
    */
   fillBuildQueue() {
+    this.updateRoleCounts();
     if(this.queueInitialCreeps()) {
       return true;
     }
@@ -186,25 +198,12 @@ Object.assign(Room.prototype, {
   },
 
   /**
-   * @description Counts active creeps (except old) + queued creeps and updates room.memory, adding counts, cleaning
-   *              up vanished roles.
+   * @description Remove creep from buildQueue
+   * @param creepName
+   * @return {Array} Resulting buildQueue
    */
-  updateRoleCounts() {
-    this.memory.creeps = _(this.find(FIND_MY_CREEPS))
-      .filter(c => c.isInitiated() && !c.isOld())
-      .concat(this.memory.buildQueue)
-      .countBy('memory.role')
-      .value();
-  },
-
-  /**
-   * @description reset and fill memory.sources with the sources in this room
-   */
-  initiateSources() {
-    this.memory.sources = [];
-    _.forEach(this.find(FIND_SOURCES), (source) => {
-      source.initiate();
-    });
+  removeQueueItemByName(creepName) {
+    return _(this.memory.buildQueue).remove(q => q.name === creepName).value();
   },
 
   /**
@@ -221,6 +220,16 @@ Object.assign(Room.prototype, {
   },
 
   /**
+   * @description reset and fill memory.sources with the sources in this room
+   */
+  initiateSources() {
+    this.memory.sources = [];
+    _.forEach(this.find(FIND_SOURCES), (source) => {
+      source.initiate();
+    });
+  },
+
+  /**
    * @description check if harvesters didn't die, mark as hostile, free up source
    */
   updateSources() {
@@ -230,15 +239,6 @@ Object.assign(Room.prototype, {
         source.isGuarded = true;
       }
     });
-  },
-
-  /**
-   * @description Remove creep from buildQueue
-   * @param creepName
-   * @return {Array} Resulting buildQueue
-   */
-  removeQueueItemByName(creepName) {
-    return _(this.memory.buildQueue).remove(q => q.name === creepName).value();
   },
 
   /**
