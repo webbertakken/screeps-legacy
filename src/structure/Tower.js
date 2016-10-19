@@ -92,22 +92,6 @@ export default class Tower extends StructureTower {
       if (targets.length) {
         return this.repairClosestTarget(this, targets);
       }
-      // if we're not building anything, distribute between walls and ramparts
-      var constructions = room.find(FIND_CONSTRUCTION_SITES);
-      if (constructions.length < 1) {
-        // repair ramparts and walls
-        targets = room.find(FIND_STRUCTURES, {
-          filter: function (structure) {
-            return (
-                structure.structureType == STRUCTURE_RAMPART ||
-                structure.structureType == STRUCTURE_WALL
-              ) && structure.hits < structure.hitsMax;
-          }
-        });
-        if (targets.length) {
-          return this.repairLowestTarget(this, targets);
-        }
-      }
     }
     return targets;
   }

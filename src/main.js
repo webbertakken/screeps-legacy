@@ -29,7 +29,7 @@ export function loop() {
         creep.routine();
       });
     } catch (e) {
-      console.log('Error in creep: ' + e.message);
+      console.log('Error in creep: ' + e.stack);
     }
     // Rooms
     try {
@@ -37,7 +37,7 @@ export function loop() {
         Game.rooms[roomName].routine();
       });
     } catch (e) {
-      console.log('Error in room: ' + e.message);
+      console.log('Error in room: ' + e.stack);
     }
     //Structures (Mapped by structureType)
     try {
@@ -45,7 +45,7 @@ export function loop() {
         structure.routine();
       });
     } catch (e) {
-      console.log('Error in structure: ' + e.message);
+      console.log('Error in structure: ' + e.stack);
     }
     // Clean Memory
     if(Game.time % 100 === 0) {
