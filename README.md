@@ -15,7 +15,7 @@ npm install
 ### Environment Variables
 Set environment variables, so you can sync your files with Screeps.  
 
-___Note:__ If you log in through Steam or Github, you can still set 
+_**Note:** If you log in through Steam or Github, you can still set 
 your Screeps email address and password for this to work_
 #### Linux / OS
 ```
@@ -45,11 +45,11 @@ Install any plugin that can work with EditorConfig.
 ##### ESLint
 Install any plugin that works with ESLint.
 ##### LoDash library
-___Note:__ Below instructions are WebStorm/PHPStorm specific and can differ per IDE._   
-
 Go to `Project Settings` > `Languages & Frameworks` > `Javascript` > `Libraries`  
 Add LoDash library from your global installation or from the node_modules 
-folder.
+folder.  
+
+_**Note:** Above instructions are WebStorm/PHPStorm specific and can differ per IDE._
 ## Usage
 ### Syncing files
 Use the following command to sanity-check, compile and deploy the code.
