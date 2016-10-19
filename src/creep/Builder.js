@@ -36,6 +36,13 @@ export default class Builder extends Creep {
       if (this.activity() === 'emptying' && this.isEmpty()) {
         return this.activity('salvaging');
       }
+      const structures = this.room.getDamagedStructures();
+      if (structures[0]) {
+        if(this.repair(structures[0]) == ERR_NOT_IN_RANGE) {
+          this.moveTo(structures[0]);
+        }
+        return;
+      }
       const sites = this.room.getMyConstructionSites();
       if (sites[0] && this.build(sites[0]) == ERR_NOT_IN_RANGE) {
         this.moveTo(sites[0]);

@@ -8,7 +8,7 @@ class Builder extends Blueprint {
 
   body = [
     MOVE,
-    CARRY,
+    MOVE,
     CARRY,
     CARRY,
     WORK
@@ -16,6 +16,7 @@ class Builder extends Blueprint {
 
   additionalParts = [
     CARRY,
+    MOVE,
     WORK,
     MOVE,
     CARRY,

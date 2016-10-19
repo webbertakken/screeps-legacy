@@ -21,6 +21,7 @@ Object.assign(Room.prototype, {
     }
     if(Game.time % 30 === 0) {
       this.checkSourcesHarvesters();
+      this.buildFlags();
     }
   },
 
@@ -60,7 +61,7 @@ Object.assign(Room.prototype, {
 
   queueUpgraders() {
     if (!this.memory.creeps.upgrader || this.memory.creeps.upgrader < this.memory.upgradersNeeded &&
-      this.find(FIND_MY_CONSTRUCTION_SITES).length
+      this.find(FIND_CONSTRUCTION_SITES).length
     ) {
       this.addCreepToQueue('upgrader', 'upgrader', {}, this.energyCapacityAvailable);
     }
@@ -134,6 +135,17 @@ Object.assign(Room.prototype, {
   },
 
   /**
+   * @Description build construction site
+   */
+  buildFlags() {
+    _.forEach(this.find(FIND_FLAGS), (flag) => {
+      if(flag.name === 'Tower') {
+        flag.pos.createConstructionSite(STRUCTURE_TOWER);
+      }
+    });
+  },
+
+  /**
    * @Description check if harvesters didn't die, mark as hostile, free up source
    */
   checkSourcesHarvesters() {
@@ -184,6 +196,17 @@ Object.assign(Room.prototype, {
     return this._allStructures;
   },
 
+  getDamagedStructures() {
+    if(!this._damagedStructures) {
+      this._damagedStructures = _(this.getAllStructures())
+        .filter((structure) => {
+          return structure.hits < 10000 && structure.hits < structure.hitsMax;
+        })
+        .value();
+    }
+    return this._damagedStructures;
+  },
+
   getMyStructures() {
     if(!this._myStructures) {
       this._myStructures = _(this.getAllStructures()).filter(s => s.my).value();
@@ -220,7 +243,7 @@ Object.assign(Room.prototype, {
   getCreepsNeedingEnergy() {
     if(!this._creepsNeedingEnergy) {
       this._creepsNeedingEnergy = _(this.getMyCreeps())
-        .filter(c => !c.isOld() && !c.isFull() && (c.memory.role === 'upgrader' || c.memory.role === 'builder'))
+        .filter(c => !c.isOld() && !c.isGoodAsFull() && (c.memory.role === 'upgrader' || c.memory.role === 'builder'))
         .sortBy(c => c.carry.energy / c.carryCapacity)
         .value();
     }
