@@ -325,6 +325,20 @@ Object.assign(Room.prototype, {
   },
 
   /**
+   * @description Get list of ramparts (or other decaying structures) that are about to lose health
+   * @return {Array.<Structure>} Decaying Structure
+   */
+  getDecayingRepairables() {
+    if(!this._decayingRepairables) {
+      this._decayingRepairables = _(this.getRepairableStructures())
+        .filter(s => s.ticksToDecay && s.ticksToDecay <= 2)
+        .sortBy('ticksToDecay')
+        .value();
+    }
+    return this._decayingRepairables;
+  },
+
+  /**
    * @description Get structures below 10k hp
    * @return {Array.<Structure>} Structures below 10k
    */
@@ -341,12 +355,19 @@ Object.assign(Room.prototype, {
 
   /**
    * @description get all structures that need energy in the room
-   * @return {Array.<Structure>} Structures needing energy
+   * @return {Array.<Structure>} Structures needing energy in priority order
    */
   getStructuresNeedingEnergy() {
     if(!this._structuresNeedingEnergy) {
       this._structuresNeedingEnergy = _(this.getMyStructures())
-        .filter(s => s.energyCapacity && s.energyCapacity > s.energy && s.structureType !== STRUCTURE_LINK).value();
+        .filter(s => s.energyCapacity && s.energyCapacity > s.energy && s.structureType !== STRUCTURE_LINK)
+        .sortBy((s) => {
+          if(s.structureType === STRUCTURE_TOWER) {
+            return (s.energyCapacity * .9) > s.energy ? 1 : 3;
+          }
+          return 2;
+        })
+        .value();
     }
     return this._structuresNeedingEnergy;
   },

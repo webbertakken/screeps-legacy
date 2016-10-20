@@ -85,7 +85,9 @@ export default class Builder extends Creep {
    * @returns {boolean}
    */
   repairAnything() {
-    const repairables = this.room.getRepairableStructures();
+    const repairables = _(this.room.getRepairableStructures())
+      .filter(s => s.structureType !== STRUCTURE_ROAD)
+      .value();
     if (repairables[0]) {
       if(this.repair(repairables[0]) == ERR_NOT_IN_RANGE) {
         this.moveTo(repairables[0]);

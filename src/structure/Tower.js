@@ -83,6 +83,8 @@ export default class Tower extends StructureTower {
       if (targets.length) {
         return this.repairClosestTarget(this, targets);
       }
+    }
+    if (this.energy > (this.energyCapacity / 10) * 9) {
       // repair roads
       targets = room.find(FIND_STRUCTURES, {
         filter: function (structure) {
@@ -91,6 +93,11 @@ export default class Tower extends StructureTower {
       });
       if (targets.length) {
         return this.repairClosestTarget(this, targets);
+      }
+      // prevent rampart from decaying
+      targets = this.room.getDecayingRepairables();
+      if (targets.length) {
+        return this.repairLowestTarget(this, targets);
       }
     }
     return targets;
@@ -127,5 +134,16 @@ export default class Tower extends StructureTower {
       console.log('Repairing failed, for unknown reason with code: ' + repairCode);
     }
   };
+
+  repairFirstTarget = function (entity, targets) {
+    if(!targets[0]) {
+      return;
+    }
+    var target = targets[0];
+    var repairCode = entity.repair(target);
+    if (repairCode !== OK) {
+      console.log('Repairing failed, for unknown reason with code: ' + repairCode);
+    }
+  }
 
 }
