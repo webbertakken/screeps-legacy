@@ -123,7 +123,13 @@ Object.assign(Room.prototype, {
    * @return {number} Amount of upgraders needed
    */
   setUpgradersNeeded() {
-    return this.memory.upgradersNeeded = 1;
+    if(!this.controller) {
+      return this.memory.upgradersNeeded = 0;
+    } else if (this.controller.level < 2) {
+      return this.memory.upgradersNeeded = 1;
+    } else {
+      return this.memory.upgradersNeeded = 3;
+    }
   },
 
   /**
