@@ -37,7 +37,7 @@ gulp.task('compile', ['eslint'], function() {
         reasons: true,
       },
       plugins: [
-        new webpack.optimize.UglifyJsPlugin()
+        // new webpack.optimize.UglifyJsPlugin()
       ],
       module: {
         loaders: [
