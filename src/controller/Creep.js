@@ -6,7 +6,11 @@ Object.assign(Creep.prototype, {
   initiate() {
     this.room.removeQueueItemByName(this.name);
     this.origin(this.room.name);
-    this.instruct ? this.instruct() : false;
+
+    if ('function' === typeof this['instruct']) {
+      this.instruct();
+    }
+
     this.isInitiated(true);
   },
 

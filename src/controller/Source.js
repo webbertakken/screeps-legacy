@@ -6,7 +6,7 @@ Object.assign(Source.prototype, {
    * Room initiate == Source initiate
    */
   initiate() {
-    const index = !this.room.memory.sources.length ? 0 : this.room.memory.sources.length;
+    const index = this.room.memory.sources.length || 0;
     this.room.memory.sources.push({
       'index': index,
       'id': this.id,
@@ -32,16 +32,17 @@ Object.assign(Source.prototype, {
    * @description get the allocated memory for this source
    */
   getSourceMemory() {
-    return _.find(this.room.memory.sources, source => source.id == this.id);
+    return _.find(this.room.memory.sources, source => source.id === this.id);
   },
 
   /**
    * @description create a flag, and save the name
    */
   putSourceFlag() {
-    //const sourceMem = this.getSourceMemory();
-    //sourceMem.miningSpot.createFlag('harv' + sourceMem.index, COLOR_CYAN, COLOR_BLUE);
-    //sourceMem.flag = 'harv' + sourceMem.index;
+    const sourceMem = this.getSourceMemory();
+    sourceMem.miningSpot = this.findBestMiningSpot();
+    sourceMem.miningSpot.createFlag('harv' + sourceMem.index, COLOR_CYAN, COLOR_BLUE);
+    sourceMem.flag = 'harv' + sourceMem.index;
   }
 
 });

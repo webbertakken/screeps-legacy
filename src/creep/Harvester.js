@@ -11,16 +11,18 @@ export default class Harvester extends Creep {
   }
 
   performRole() {
-    this.MOTTest();
+    this.MotTest();
     this.task_harvest();
     this.task_empty();
     this.task_salvage();
   }
 
-  MOTTest() {
+  MotTest() {
     if (Game.time % 30 !== 0) {
       return;
     }
+
+    // Retirement
     if (this.isOld()) {
       if (this.isAssignedToSource()) {
         this.unassignFromSource();
@@ -28,13 +30,17 @@ export default class Harvester extends Creep {
       if (this.replacementHasArrived() || this.isVeryOld()) {
         this.activity('emptying');
       }
-    } else {
-      if (!this.isAssignedToSource()) {
-        this.assignToClosestFreeSource();
-      }
-      if (!Game.getObjectById(this.assignedTruck())) {
-        this.unassignTruck();
-      }
+      return;
+    }
+
+    // Assign to resource if not assigned anymore
+    if (!this.isAssignedToSource()) {
+      this.assignToClosestFreeSource();
+    }
+
+    // Remove truck if it does no longer exist
+    if (!Game.getObjectById(this.assignedTruck())) {
+      this.unassignTruck();
     }
   }
 
