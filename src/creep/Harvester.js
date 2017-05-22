@@ -4,14 +4,19 @@ import '../controller/Creep';
 export default class Harvester extends Creep {
 
   instruct() {
-    this.activity('harvesting');
+    // Start harvesting at free resource or start searching for one
     if (this.assignToClosestFreeSource()) {
-      this.isGivenInstructions(true);
+      this.activity('harvesting');
+    } else {
+      this.activity('searching');
     }
+    // Indicate the harvester can now start working
+    this.isGivenInstructions(true);
   }
 
   performRole() {
     this.MotTest();
+    this.task_search();
     this.task_harvest();
     this.task_empty();
     this.task_salvage();
@@ -46,6 +51,14 @@ export default class Harvester extends Creep {
 
   replacementHasArrived() {
     return !!_(this.pos.findInRange(FIND_MY_CREEPS, 1)).find(c => c.role() === this.role() && c.id !== this.id);
+  }
+
+  task_search() {
+    if(this.activity() !== 'searching' || Game.time % 30 !== 2) {
+      return;
+    }
+
+    console.log(this.name + ': task_search() not implemented.');
   }
 
   /**

@@ -5,6 +5,7 @@ export default class Upgrader extends Creep {
 
   instruct() {
     this.activity('upgrading');
+
     this.isGivenInstructions(true);
   }
 

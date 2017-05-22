@@ -4,18 +4,30 @@ import creepMapper from '../util/creepMapper';
 Object.assign(Creep.prototype, {
 
   initiate() {
+    // Remove from this rooms queue
     this.room.removeQueueItemByName(this.name);
+    // Set origin
     this.origin(this.room.name);
-
-    if ('function' === typeof this['instruct']) {
-      this.instruct();
-    }
-
+    // Indicate Creep now exists
     this.isInitiated(true);
   },
 
   routine() {
-    !this.isInitiated() && this.ticksToLive ? this.initiate() : false;
+    // Initiate when alive
+    if (!this.isInitiated() && this.ticksToLive) {
+      this.initiate();
+
+      return;
+    }
+
+    // Give instructions once Initiated
+    if (!this.isGivenInstructions()) {
+      this.instruct();
+
+      return;
+    }
+
+    // Perform specific role
     this.performRole();
   },
 
