@@ -1,4 +1,4 @@
-import { Creep } from 'screeps-globals';
+import {Creep} from 'screeps-globals';
 import creepMapper from '../util/creepMapper';
 
 Object.assign(Creep.prototype, {
@@ -20,7 +20,7 @@ Object.assign(Creep.prototype, {
    */
   task_salvage() {
     if (this.activity() === 'salvaging') {
-      if(!this.isNextTo(this.disassemblerLocation())) {
+      if (!this.isNextTo(this.disassemblerLocation())) {
         this.moveTo(this.disassemblerLocation().x, this.disassemblerLocation().y);
       }
     }
@@ -67,7 +67,7 @@ Object.assign(Creep.prototype, {
   },
 
   isGoodAsFull() {
-    return _.sum(this.carry) + this.carryCapacity/3*2 >= this.carryCapacity;
+    return _.sum(this.carry) + this.carryCapacity / 3 * 2 >= this.carryCapacity;
   },
 
   carriesNoEnergy() {
@@ -79,7 +79,7 @@ Object.assign(Creep.prototype, {
   },
 
   disassemblerLocation() {
-    if(this.memory.disassemblerLocation === undefined) {
+    if (this.memory.disassemblerLocation === undefined) {
       this.memory.disassemblerLocation = this.pos.findClosestByRange(FIND_MY_SPAWNS).pos;
     }
     return this.memory.disassemblerLocation;

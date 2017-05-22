@@ -23,7 +23,7 @@ export default class Tower extends StructureTower {
       }
       // attack enemy military structures //STRUCTURE_TOWER
       targets = room.find(FIND_HOSTILE_STRUCTURES, {
-        filter: function (structure) {
+        filter: function(structure) {
           return structure.structureType == STRUCTURE_TOWER;
         },
       });
@@ -55,7 +55,7 @@ export default class Tower extends StructureTower {
         this.attackClosestTarget(this, targets);
       }
       targets = room.find(FIND_MY_STRUCTURES, {
-        filter: function (structure) {
+        filter: function(structure) {
           return structure.structureType == STRUCTURE_TOWER && structure.hitsMax > structure.hits;
         },
       });
@@ -67,7 +67,7 @@ export default class Tower extends StructureTower {
     if (this.energy > (this.energyCapacity / 4) * 3) {
       // heal friendly non-military creeps
       targets = room.find(FIND_MY_CREEPS, {
-        filter: function (creep) {
+        filter: function(creep) {
           return creep.hitsMax > creep.hits;
         },
       });
@@ -76,7 +76,7 @@ export default class Tower extends StructureTower {
       }
       // repair friendly buildings
       targets = room.find(FIND_MY_STRUCTURES, {
-        filter: function (structure) {
+        filter: function(structure) {
           return structure.hitsMax > structure.hits && structure.structureType != STRUCTURE_RAMPART;
         }
       });
@@ -87,7 +87,7 @@ export default class Tower extends StructureTower {
     if (this.energy > (this.energyCapacity / 10) * 9) {
       // repair roads
       targets = room.find(FIND_STRUCTURES, {
-        filter: function (structure) {
+        filter: function(structure) {
           return structure.structureType == STRUCTURE_ROAD && structure.hitsMax > structure.hits;
         },
       });
@@ -103,7 +103,7 @@ export default class Tower extends StructureTower {
     return targets;
   }
 
-  attackClosestTarget = function (entity, targets) {
+  attackClosestTarget = function(entity, targets) {
     var target = entity.pos.findClosestByRange(targets);
     var attackCode = entity.attack(target);
     if (attackCode != 0) {
@@ -111,7 +111,7 @@ export default class Tower extends StructureTower {
     }
   };
 
-  healClosestTarget = function (entity, targets) {
+  healClosestTarget = function(entity, targets) {
     var target = entity.pos.findClosestByRange(targets);
     var healCode = entity.heal(target);
     if (healCode != 0) {
@@ -119,7 +119,7 @@ export default class Tower extends StructureTower {
     }
   };
 
-  repairClosestTarget = function (entity, targets) {
+  repairClosestTarget = function(entity, targets) {
     var target = entity.pos.findClosestByRange(targets);
     var repairCode = entity.repair(target);
     if (repairCode != 0) {
@@ -127,7 +127,7 @@ export default class Tower extends StructureTower {
     }
   };
 
-  repairLowestTarget = function (entity, targets) {
+  repairLowestTarget = function(entity, targets) {
     var target = _.min(targets, target => target.hits);
     var repairCode = entity.repair(target);
     if (repairCode != 0) {
@@ -135,8 +135,8 @@ export default class Tower extends StructureTower {
     }
   };
 
-  repairFirstTarget = function (entity, targets) {
-    if(!targets[0]) {
+  repairFirstTarget = function(entity, targets) {
+    if (!targets[0]) {
       return;
     }
     var target = targets[0];
@@ -144,6 +144,6 @@ export default class Tower extends StructureTower {
     if (repairCode !== OK) {
       console.log('Repairing failed, for unknown reason with code: ' + repairCode);
     }
-  }
+  };
 
 }

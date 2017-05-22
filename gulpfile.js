@@ -1,9 +1,9 @@
-var gulp          = require('gulp');
-var watch         = require('gulp-watch');
-var webpackStream = require('webpack-stream');
-var webpack       = require('webpack');
-var screeps       = require('gulp-screeps');
-var eslint        = require('gulp-eslint');
+const gulp = require('gulp');
+const watch = require('gulp-watch');
+const webpackStream = require('webpack-stream');
+const webpack = require('webpack');
+const screeps = require('gulp-screeps');
+const eslint = require('gulp-eslint');
 
 gulp.task('watch', function() {
   return watch('src/**.js', ['sync']);
@@ -23,7 +23,7 @@ gulp.task('sync', ['compile'], function() {
 
 gulp.task('compile', ['eslint'], function() {
   return gulp.src('src/main.js')
-    .pipe(webpackStream( {
+    .pipe(webpackStream({
       output: {
         filename: 'main.js',
         libraryTarget: 'commonjs2',
@@ -53,13 +53,13 @@ gulp.task('compile', ['eslint'], function() {
           },
         ],
       },
-    } ), webpack)
+    }), webpack)
     .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('eslint', function() {
   return gulp.src(['src/*.js', 'src/*/*.js'])
-    .pipe(eslint( {
+    .pipe(eslint({
       parser: 'babel-eslint',
       env: {
         es6: true,
@@ -91,7 +91,7 @@ gulp.task('eslint', function() {
         ],
         'no-console': 0,
       }
-    } ))
+    }))
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
 });

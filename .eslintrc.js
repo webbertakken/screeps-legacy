@@ -100,37 +100,37 @@ module.exports = {
     COLOR_GREY: 9,
     COLOR_WHITE: 10,
 
-    LOOK_CREEPS: "creep",
-    LOOK_ENERGY: "energy",
-    LOOK_RESOURCES: "resource",
-    LOOK_SOURCES: "source",
-    LOOK_MINERALS: "mineral",
-    LOOK_STRUCTURES: "structure",
-    LOOK_FLAGS: "flag",
-    LOOK_CONSTRUCTION_SITES: "constructionSite",
-    LOOK_NUKES: "nuke",
-    LOOK_TERRAIN: "terrain",
+    LOOK_CREEPS: 'creep',
+    LOOK_ENERGY: 'energy',
+    LOOK_RESOURCES: 'resource',
+    LOOK_SOURCES: 'source',
+    LOOK_MINERALS: 'mineral',
+    LOOK_STRUCTURES: 'structure',
+    LOOK_FLAGS: 'flag',
+    LOOK_CONSTRUCTION_SITES: 'constructionSite',
+    LOOK_NUKES: 'nuke',
+    LOOK_TERRAIN: 'terrain',
 
-    OBSTACLE_OBJECT_TYPES: ["spawn", "creep", "wall", "source", "constructedWall", "extension", "link", "storage", "tower", "observer", "powerSpawn", "powerBank", "lab", "terminal","nuker"],
+    OBSTACLE_OBJECT_TYPES: ['spawn', 'creep', 'wall', 'source', 'constructedWall', 'extension', 'link', 'storage', 'tower', 'observer', 'powerSpawn', 'powerBank', 'lab', 'terminal', 'nuker'],
 
-    MOVE: "move",
-    WORK: "work",
-    CARRY: "carry",
-    ATTACK: "attack",
-    RANGED_ATTACK: "ranged_attack",
-    TOUGH: "tough",
-    HEAL: "heal",
-    CLAIM: "claim",
+    MOVE: 'move',
+    WORK: 'work',
+    CARRY: 'carry',
+    ATTACK: 'attack',
+    RANGED_ATTACK: 'ranged_attack',
+    TOUGH: 'tough',
+    HEAL: 'heal',
+    CLAIM: 'claim',
 
     BODYPART_COST: {
-      "move": 50,
-      "work": 100,
-      "attack": 80,
-      "carry": 50,
-      "heal": 250,
-      "ranged_attack": 150,
-      "tough": 10,
-      "claim": 600
+      'move': 50,
+      'work': 100,
+      'attack': 80,
+      'carry': 50,
+      'heal': 250,
+      'ranged_attack': 150,
+      'tough': 10,
+      'claim': 600
     },
 
     CREEP_LIFE_TIME: 1500,
@@ -189,62 +189,62 @@ module.exports = {
     STORAGE_CAPACITY: 1000000,
     STORAGE_HITS: 10000,
 
-    STRUCTURE_SPAWN: "spawn",
-    STRUCTURE_EXTENSION: "extension",
-    STRUCTURE_ROAD: "road",
-    STRUCTURE_WALL: "constructedWall",
-    STRUCTURE_RAMPART: "rampart",
-    STRUCTURE_KEEPER_LAIR: "keeperLair",
-    STRUCTURE_PORTAL: "portal",
-    STRUCTURE_CONTROLLER: "controller",
-    STRUCTURE_LINK: "link",
-    STRUCTURE_STORAGE: "storage",
-    STRUCTURE_TOWER: "tower",
-    STRUCTURE_OBSERVER: "observer",
-    STRUCTURE_POWER_BANK: "powerBank",
-    STRUCTURE_POWER_SPAWN: "powerSpawn",
-    STRUCTURE_EXTRACTOR: "extractor",
-    STRUCTURE_LAB: "lab",
-    STRUCTURE_TERMINAL: "terminal",
-    STRUCTURE_CONTAINER: "container",
-    STRUCTURE_NUKER: "nuker",
+    STRUCTURE_SPAWN: 'spawn',
+    STRUCTURE_EXTENSION: 'extension',
+    STRUCTURE_ROAD: 'road',
+    STRUCTURE_WALL: 'constructedWall',
+    STRUCTURE_RAMPART: 'rampart',
+    STRUCTURE_KEEPER_LAIR: 'keeperLair',
+    STRUCTURE_PORTAL: 'portal',
+    STRUCTURE_CONTROLLER: 'controller',
+    STRUCTURE_LINK: 'link',
+    STRUCTURE_STORAGE: 'storage',
+    STRUCTURE_TOWER: 'tower',
+    STRUCTURE_OBSERVER: 'observer',
+    STRUCTURE_POWER_BANK: 'powerBank',
+    STRUCTURE_POWER_SPAWN: 'powerSpawn',
+    STRUCTURE_EXTRACTOR: 'extractor',
+    STRUCTURE_LAB: 'lab',
+    STRUCTURE_TERMINAL: 'terminal',
+    STRUCTURE_CONTAINER: 'container',
+    STRUCTURE_NUKER: 'nuker',
 
     CONSTRUCTION_COST: {
-      "spawn": 15000,
-      "extension": 3000,
-      "road": 300,
-      "constructedWall": 1,
-      "rampart": 1,
-      "link": 5000,
-      "storage": 30000,
-      "tower": 5000,
-      "observer": 8000,
-      "powerSpawn": 100000,
-      "extractor": 5000,
-      "lab": 50000,
-      "terminal": 100000,
-      "container": 5000,
-      "nuker": 100000
+      'spawn': 15000,
+      'extension': 3000,
+      'road': 300,
+      'constructedWall': 1,
+      'rampart': 1,
+      'link': 5000,
+      'storage': 30000,
+      'tower': 5000,
+      'observer': 8000,
+      'powerSpawn': 100000,
+      'extractor': 5000,
+      'lab': 50000,
+      'terminal': 100000,
+      'container': 5000,
+      'nuker': 100000
     },
     CONSTRUCTION_COST_ROAD_SWAMP_RATIO: 5,
 
     CONTROLLER_LEVELS: {1: 200, 2: 45000, 3: 135000, 4: 405000, 5: 1215000, 6: 3645000, 7: 10935000},
     CONTROLLER_STRUCTURES: {
-      "spawn": {0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 2, 8: 3},
-      "extension": {0: 0, 1: 0, 2: 5, 3: 10, 4: 20, 5: 30, 6: 40, 7: 50, 8: 60},
-      "link": {1: 0, 2: 0, 3: 0, 4: 0, 5: 2, 6: 3, 7: 4, 8: 6},
-      "road": {0: 2500, 1: 2500, 2: 2500, 3: 2500, 4: 2500, 5: 2500, 6: 2500, 7: 2500, 8: 2500},
-      "constructedWall": {1: 0, 2: 2500, 3: 2500, 4: 2500, 5: 2500, 6: 2500, 7: 2500, 8: 2500},
-      "rampart": {1: 0, 2: 2500, 3: 2500, 4: 2500, 5: 2500, 6: 2500, 7: 2500, 8: 2500},
-      "storage": {1: 0, 2: 0, 3: 0, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1},
-      "tower": {1: 0, 2: 0, 3: 1, 4: 1, 5: 2, 6: 2, 7: 3, 8: 6},
-      "observer": {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1},
-      "powerSpawn": {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1},
-      "extractor": {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 1, 7: 1, 8: 1},
-      "terminal": {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 1, 7: 1, 8: 1},
-      "lab": {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 3, 7: 6, 8: 10},
-      "container": {0: 5, 1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5, 7: 5, 8: 5},
-      "nuker": {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1}
+      'spawn': {0: 0, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 7: 2, 8: 3},
+      'extension': {0: 0, 1: 0, 2: 5, 3: 10, 4: 20, 5: 30, 6: 40, 7: 50, 8: 60},
+      'link': {1: 0, 2: 0, 3: 0, 4: 0, 5: 2, 6: 3, 7: 4, 8: 6},
+      'road': {0: 2500, 1: 2500, 2: 2500, 3: 2500, 4: 2500, 5: 2500, 6: 2500, 7: 2500, 8: 2500},
+      'constructedWall': {1: 0, 2: 2500, 3: 2500, 4: 2500, 5: 2500, 6: 2500, 7: 2500, 8: 2500},
+      'rampart': {1: 0, 2: 2500, 3: 2500, 4: 2500, 5: 2500, 6: 2500, 7: 2500, 8: 2500},
+      'storage': {1: 0, 2: 0, 3: 0, 4: 1, 5: 1, 6: 1, 7: 1, 8: 1},
+      'tower': {1: 0, 2: 0, 3: 1, 4: 1, 5: 2, 6: 2, 7: 3, 8: 6},
+      'observer': {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1},
+      'powerSpawn': {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1},
+      'extractor': {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 1, 7: 1, 8: 1},
+      'terminal': {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 1, 7: 1, 8: 1},
+      'lab': {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 3, 7: 6, 8: 10},
+      'container': {0: 5, 1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5, 7: 5, 8: 5},
+      'nuker': {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1}
     },
     CONTROLLER_DOWNGRADE: {1: 20000, 2: 5000, 3: 10000, 4: 20000, 5: 40000, 6: 60000, 7: 100000, 8: 150000},
     CONTROLLER_CLAIM_DOWNGRADE: 0.2,
@@ -291,10 +291,10 @@ module.exports = {
     GCL_MULTIPLY: 1000000,
     GCL_NOVICE: 3,
 
-    MODE_SIMULATION: "simulation",
-    MODE_SURVIVAL: "survival",
-    MODE_WORLD: "world",
-    MODE_ARENA: "arena",
+    MODE_SIMULATION: 'simulation',
+    MODE_SURVIVAL: 'survival',
+    MODE_WORLD: 'world',
+    MODE_ARENA: 'arena',
 
     TERRAIN_MASK_WALL: 1,
     TERRAIN_MASK_SWAMP: 2,
@@ -305,13 +305,13 @@ module.exports = {
 
     MINERAL_REGEN_TIME: 50000,
     MINERAL_MIN_AMOUNT: {
-      "H": 140000,
-      "O": 140000,
-      "L": 70000,
-      "K": 70000,
-      "Z": 70000,
-      "U": 70000,
-      "X": 70000
+      'H': 140000,
+      'O': 140000,
+      'L': 70000,
+      'K': 70000,
+      'Z': 70000,
+      'U': 70000,
+      'X': 70000
     },
     MINERAL_RANDOM_FACTOR: 2,
 
@@ -340,185 +340,185 @@ module.exports = {
 
     PORTAL_DECAY: 30000,
 
-    RESOURCE_ENERGY: "energy",
-    RESOURCE_POWER: "power",
+    RESOURCE_ENERGY: 'energy',
+    RESOURCE_POWER: 'power',
 
-    RESOURCE_HYDROGEN: "H",
-    RESOURCE_OXYGEN: "O",
-    RESOURCE_UTRIUM: "U",
-    RESOURCE_LEMERGIUM: "L",
-    RESOURCE_KEANIUM: "K",
-    RESOURCE_ZYNTHIUM: "Z",
-    RESOURCE_CATALYST: "X",
-    RESOURCE_GHODIUM: "G",
+    RESOURCE_HYDROGEN: 'H',
+    RESOURCE_OXYGEN: 'O',
+    RESOURCE_UTRIUM: 'U',
+    RESOURCE_LEMERGIUM: 'L',
+    RESOURCE_KEANIUM: 'K',
+    RESOURCE_ZYNTHIUM: 'Z',
+    RESOURCE_CATALYST: 'X',
+    RESOURCE_GHODIUM: 'G',
 
-    RESOURCE_HYDROXIDE: "OH",
-    RESOURCE_ZYNTHIUM_KEANITE: "ZK",
-    RESOURCE_UTRIUM_LEMERGITE: "UL",
+    RESOURCE_HYDROXIDE: 'OH',
+    RESOURCE_ZYNTHIUM_KEANITE: 'ZK',
+    RESOURCE_UTRIUM_LEMERGITE: 'UL',
 
-    RESOURCE_UTRIUM_HYDRIDE: "UH",
-    RESOURCE_UTRIUM_OXIDE: "UO",
-    RESOURCE_KEANIUM_HYDRIDE: "KH",
-    RESOURCE_KEANIUM_OXIDE: "KO",
-    RESOURCE_LEMERGIUM_HYDRIDE: "LH",
-    RESOURCE_LEMERGIUM_OXIDE: "LO",
-    RESOURCE_ZYNTHIUM_HYDRIDE: "ZH",
-    RESOURCE_ZYNTHIUM_OXIDE: "ZO",
-    RESOURCE_GHODIUM_HYDRIDE: "GH",
-    RESOURCE_GHODIUM_OXIDE: "GO",
+    RESOURCE_UTRIUM_HYDRIDE: 'UH',
+    RESOURCE_UTRIUM_OXIDE: 'UO',
+    RESOURCE_KEANIUM_HYDRIDE: 'KH',
+    RESOURCE_KEANIUM_OXIDE: 'KO',
+    RESOURCE_LEMERGIUM_HYDRIDE: 'LH',
+    RESOURCE_LEMERGIUM_OXIDE: 'LO',
+    RESOURCE_ZYNTHIUM_HYDRIDE: 'ZH',
+    RESOURCE_ZYNTHIUM_OXIDE: 'ZO',
+    RESOURCE_GHODIUM_HYDRIDE: 'GH',
+    RESOURCE_GHODIUM_OXIDE: 'GO',
 
-    RESOURCE_UTRIUM_ACID: "UH2O",
-    RESOURCE_UTRIUM_ALKALIDE: "UHO2",
-    RESOURCE_KEANIUM_ACID: "KH2O",
-    RESOURCE_KEANIUM_ALKALIDE: "KHO2",
-    RESOURCE_LEMERGIUM_ACID: "LH2O",
-    RESOURCE_LEMERGIUM_ALKALIDE: "LHO2",
-    RESOURCE_ZYNTHIUM_ACID: "ZH2O",
-    RESOURCE_ZYNTHIUM_ALKALIDE: "ZHO2",
-    RESOURCE_GHODIUM_ACID: "GH2O",
-    RESOURCE_GHODIUM_ALKALIDE: "GHO2",
+    RESOURCE_UTRIUM_ACID: 'UH2O',
+    RESOURCE_UTRIUM_ALKALIDE: 'UHO2',
+    RESOURCE_KEANIUM_ACID: 'KH2O',
+    RESOURCE_KEANIUM_ALKALIDE: 'KHO2',
+    RESOURCE_LEMERGIUM_ACID: 'LH2O',
+    RESOURCE_LEMERGIUM_ALKALIDE: 'LHO2',
+    RESOURCE_ZYNTHIUM_ACID: 'ZH2O',
+    RESOURCE_ZYNTHIUM_ALKALIDE: 'ZHO2',
+    RESOURCE_GHODIUM_ACID: 'GH2O',
+    RESOURCE_GHODIUM_ALKALIDE: 'GHO2',
 
-    RESOURCE_CATALYZED_UTRIUM_ACID: "XUH2O",
-    RESOURCE_CATALYZED_UTRIUM_ALKALIDE: "XUHO2",
-    RESOURCE_CATALYZED_KEANIUM_ACID: "XKH2O",
-    RESOURCE_CATALYZED_KEANIUM_ALKALIDE: "XKHO2",
-    RESOURCE_CATALYZED_LEMERGIUM_ACID: "XLH2O",
-    RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE: "XLHO2",
-    RESOURCE_CATALYZED_ZYNTHIUM_ACID: "XZH2O",
-    RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE: "XZHO2",
-    RESOURCE_CATALYZED_GHODIUM_ACID: "XGH2O",
-    RESOURCE_CATALYZED_GHODIUM_ALKALIDE: "XGHO2",
+    RESOURCE_CATALYZED_UTRIUM_ACID: 'XUH2O',
+    RESOURCE_CATALYZED_UTRIUM_ALKALIDE: 'XUHO2',
+    RESOURCE_CATALYZED_KEANIUM_ACID: 'XKH2O',
+    RESOURCE_CATALYZED_KEANIUM_ALKALIDE: 'XKHO2',
+    RESOURCE_CATALYZED_LEMERGIUM_ACID: 'XLH2O',
+    RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE: 'XLHO2',
+    RESOURCE_CATALYZED_ZYNTHIUM_ACID: 'XZH2O',
+    RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE: 'XZHO2',
+    RESOURCE_CATALYZED_GHODIUM_ACID: 'XGH2O',
+    RESOURCE_CATALYZED_GHODIUM_ALKALIDE: 'XGHO2',
 
     REACTIONS: {
       H: {
-        O: "OH",
-        L: "LH",
-        K: "KH",
-        U: "UH",
-        Z: "ZH",
-        G: "GH"
+        O: 'OH',
+        L: 'LH',
+        K: 'KH',
+        U: 'UH',
+        Z: 'ZH',
+        G: 'GH'
       },
       O: {
-        H: "OH",
-        L: "LO",
-        K: "KO",
-        U: "UO",
-        Z: "ZO",
-        G: "GO"
+        H: 'OH',
+        L: 'LO',
+        K: 'KO',
+        U: 'UO',
+        Z: 'ZO',
+        G: 'GO'
       },
       Z: {
-        K: "ZK",
-        H: "ZH",
-        O: "ZO"
+        K: 'ZK',
+        H: 'ZH',
+        O: 'ZO'
       },
       L: {
-        U: "UL",
-        H: "LH",
-        O: "LO"
+        U: 'UL',
+        H: 'LH',
+        O: 'LO'
       },
       K: {
-        Z: "ZK",
-        H: "KH",
-        O: "KO"
+        Z: 'ZK',
+        H: 'KH',
+        O: 'KO'
       },
       G: {
-        H: "GH",
-        O: "GO"
+        H: 'GH',
+        O: 'GO'
       },
       U: {
-        L: "UL",
-        H: "UH",
-        O: "UO"
+        L: 'UL',
+        H: 'UH',
+        O: 'UO'
       },
       OH: {
-        UH: "UH2O",
-        UO: "UHO2",
-        ZH: "ZH2O",
-        ZO: "ZHO2",
-        KH: "KH2O",
-        KO: "KHO2",
-        LH: "LH2O",
-        LO: "LHO2",
-        GH: "GH2O",
-        GO: "GHO2"
+        UH: 'UH2O',
+        UO: 'UHO2',
+        ZH: 'ZH2O',
+        ZO: 'ZHO2',
+        KH: 'KH2O',
+        KO: 'KHO2',
+        LH: 'LH2O',
+        LO: 'LHO2',
+        GH: 'GH2O',
+        GO: 'GHO2'
       },
       X: {
-        UH2O: "XUH2O",
-        UHO2: "XUHO2",
-        LH2O: "XLH2O",
-        LHO2: "XLHO2",
-        KH2O: "XKH2O",
-        KHO2: "XKHO2",
-        ZH2O: "XZH2O",
-        ZHO2: "XZHO2",
-        GH2O: "XGH2O",
-        GHO2: "XGHO2"
+        UH2O: 'XUH2O',
+        UHO2: 'XUHO2',
+        LH2O: 'XLH2O',
+        LHO2: 'XLHO2',
+        KH2O: 'XKH2O',
+        KHO2: 'XKHO2',
+        ZH2O: 'XZH2O',
+        ZHO2: 'XZHO2',
+        GH2O: 'XGH2O',
+        GHO2: 'XGHO2'
       },
       ZK: {
-        UL: "G"
+        UL: 'G'
       },
       UL: {
-        ZK: "G"
+        ZK: 'G'
       },
       LH: {
-        OH: "LH2O"
+        OH: 'LH2O'
       },
       ZH: {
-        OH: "ZH2O"
+        OH: 'ZH2O'
       },
       GH: {
-        OH: "GH2O"
+        OH: 'GH2O'
       },
       KH: {
-        OH: "KH2O"
+        OH: 'KH2O'
       },
       UH: {
-        OH: "UH2O"
+        OH: 'UH2O'
       },
       LO: {
-        OH: "LHO2"
+        OH: 'LHO2'
       },
       ZO: {
-        OH: "ZHO2"
+        OH: 'ZHO2'
       },
       KO: {
-        OH: "KHO2"
+        OH: 'KHO2'
       },
       UO: {
-        OH: "UHO2"
+        OH: 'UHO2'
       },
       GO: {
-        OH: "GHO2"
+        OH: 'GHO2'
       },
       LH2O: {
-        X: "XLH2O"
+        X: 'XLH2O'
       },
       KH2O: {
-        X: "XKH2O"
+        X: 'XKH2O'
       },
       ZH2O: {
-        X: "XZH2O"
+        X: 'XZH2O'
       },
       UH2O: {
-        X: "XUH2O"
+        X: 'XUH2O'
       },
       GH2O: {
-        X: "XGH2O"
+        X: 'XGH2O'
       },
       LHO2: {
-        X: "XLHO2"
+        X: 'XLHO2'
       },
       UHO2: {
-        X: "XUHO2"
+        X: 'XUHO2'
       },
       KHO2: {
-        X: "XKHO2"
+        X: 'XKHO2'
       },
       ZHO2: {
-        X: "XZHO2"
+        X: 'XZHO2'
       },
       GHO2: {
-        X: "XGHO2"
+        X: 'XGHO2'
       }
     },
 
@@ -638,12 +638,12 @@ module.exports = {
       }
     },
     '_': true,
-    "StructureController": true,
-    "StructureSpawn": true,
-    "StructureExtension": true,
-    "StructureWall": true,
-    "StructureRampart": true,
-    "StructureTower": true,
-    "StructureLink": true,
+    'StructureController': true,
+    'StructureSpawn': true,
+    'StructureExtension': true,
+    'StructureWall': true,
+    'StructureRampart': true,
+    'StructureTower': true,
+    'StructureLink': true,
   },
 };

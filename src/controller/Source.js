@@ -1,4 +1,4 @@
-import { Source, PathFinder } from 'screeps-globals';
+import {PathFinder, Source} from 'screeps-globals';
 
 Object.assign(Source.prototype, {
 
@@ -21,7 +21,7 @@ Object.assign(Source.prototype, {
    */
   findBestMiningSpot() {
     const shortPath = PathFinder.search(this.pos, this.room.find(FIND_MY_SPAWNS)[0].pos, {plainCost: 1, swampCost: 1});
-    if(!shortPath || !shortPath.incomplete) {
+    if (!shortPath || !shortPath.incomplete) {
       return shortPath.path[0];
     } else {
       return false;
@@ -39,9 +39,9 @@ Object.assign(Source.prototype, {
    * @description create a flag, and save the name
    */
   putSourceFlag() {
-    const sourceMem = this.getSourceMemory();
-    sourceMem.miningSpot.createFlag('harv' + sourceMem.index, COLOR_CYAN, COLOR_BLUE);
-    sourceMem.flag = 'harv' + sourceMem.index;
+    //const sourceMem = this.getSourceMemory();
+    //sourceMem.miningSpot.createFlag('harv' + sourceMem.index, COLOR_CYAN, COLOR_BLUE);
+    //sourceMem.flag = 'harv' + sourceMem.index;
   }
 
 });

@@ -2,7 +2,7 @@ const customGame = {
 
   cleanMemoryCreeps() {
     _.forEach(Memory.creeps, (creep, key) => {
-      if(!Game.creeps[key]) {
+      if (!Game.creeps[key]) {
         delete Memory.creeps[key];
       }
     });
@@ -10,7 +10,7 @@ const customGame = {
 
   cleanMemoryRooms() {
     _.forEach(Memory.rooms, (room, key) => {
-      if(!Game.rooms[key]) {
+      if (!Game.rooms[key]) {
         delete Memory.rooms[key];
       }
     });

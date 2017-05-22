@@ -1,4 +1,4 @@
-import { Creep } from 'screeps-globals';
+import {Creep} from 'screeps-globals';
 import '../controller/Creep';
 
 export default class Builder extends Creep {
@@ -17,14 +17,14 @@ export default class Builder extends Creep {
    * @Description gets filled by trucks early on, if storage available be proactive
    */
   task_load() {
-    if(this.activity() === 'loading') {
+    if (this.activity() === 'loading') {
       const storage = this.room.getStorageWithEnergy();
-      if(storage[0]) {
+      if (storage[0]) {
         if (this.withdraw(storage[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
           this.moveTo(storage[0]);
         }
       }
-      if(this.isGoodAsFull()) {
+      if (this.isGoodAsFull()) {
         return this.activity('building');
       } else {
         return true;
@@ -37,7 +37,7 @@ export default class Builder extends Creep {
    * @Description build structures in placement order
    */
   task_build() {
-    if(this.activity() === 'building' || this.activity() === 'emptying') {
+    if (this.activity() === 'building' || this.activity() === 'emptying') {
       if (this.activity() === 'emptying' && this.isEmpty()) {
         return this.activity('salvaging');
       }
@@ -57,7 +57,7 @@ export default class Builder extends Creep {
       .filter(s => s.structureType !== STRUCTURE_ROAD)
       .value();
     if (structures[0]) {
-      if(this.repair(structures[0]) == ERR_NOT_IN_RANGE) {
+      if (this.repair(structures[0]) == ERR_NOT_IN_RANGE) {
         this.moveTo(structures[0]);
       }
       return true;
@@ -72,7 +72,7 @@ export default class Builder extends Creep {
   constructBuildings() {
     const sites = this.room.getMyConstructionSites();
     if (sites[0]) {
-      if(this.build(sites[0]) == ERR_NOT_IN_RANGE) {
+      if (this.build(sites[0]) == ERR_NOT_IN_RANGE) {
         this.moveTo(sites[0]);
       }
       return true;
@@ -89,7 +89,7 @@ export default class Builder extends Creep {
       .filter(s => s.structureType !== STRUCTURE_ROAD)
       .value();
     if (repairables[0]) {
-      if(this.repair(repairables[0]) == ERR_NOT_IN_RANGE) {
+      if (this.repair(repairables[0]) == ERR_NOT_IN_RANGE) {
         this.moveTo(repairables[0]);
       }
       return true;

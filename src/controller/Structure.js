@@ -1,10 +1,10 @@
-import { Structure } from 'screeps-globals';
+import {Structure} from 'screeps-globals';
 import structureMapper from '../util/structureMapper';
 
 Object.assign(Structure.prototype, {
 
   routine() {
-    if(this.performRole) {
+    if (this.performRole) {
       this.performRole();
     }
   },

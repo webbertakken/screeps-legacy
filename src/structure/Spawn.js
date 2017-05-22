@@ -19,8 +19,8 @@ export default class Spawn extends StructureSpawn {
     this.recycleCreeps();
   }
 
-  buildQueuedCreep(){
-    if(this.spawning || !this.room.memory.buildQueue[0] || this.room.memory.buildQueue[0].beingBuilt) {
+  buildQueuedCreep() {
+    if (this.spawning || !this.room.memory.buildQueue[0] || this.room.memory.buildQueue[0].beingBuilt) {
       return;
     }
     const queueItem = this.room.memory.buildQueue[0];
@@ -31,12 +31,12 @@ export default class Spawn extends StructureSpawn {
     }
     var blueprint = new Constructor();
     const energy = queueItem.maxEnergy <= blueprint.cost() ? queueItem.maxEnergy : blueprint.cost();
-    if(energy > this.room.energyAvailable) {
+    if (energy > this.room.energyAvailable) {
       return;
     }
     Object.assign(blueprint.memory, queueItem.memory);
     const creepName = this.createCreepWithRole(blueprint.generateBody(energy), blueprint.name, blueprint.memory);
-    if(creepName) {
+    if (creepName) {
       // instant-sync
       this.addCountToRole(queueItem.role);
       this.markQueueItemAsBeingBuiltWithName(creepName);
@@ -66,7 +66,7 @@ export default class Spawn extends StructureSpawn {
 
   recycleCreeps() {
     const target = _.find(this.pos.findInRange(FIND_MY_CREEPS, 1), c => c.memory.disassemblerLocation);
-    if(target) {
+    if (target) {
       this.recycleCreep(target);
     }
   }

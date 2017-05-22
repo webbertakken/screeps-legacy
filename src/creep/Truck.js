@@ -1,11 +1,11 @@
-import { Creep } from 'screeps-globals';
+import {Creep} from 'screeps-globals';
 import '../controller/Creep';
 
 export default class Truck extends Creep {
 
   instruct() {
     this.memory.activity = 'load';
-    if(this.assignToClosestHarvester()) {
+    if (this.assignToClosestHarvester()) {
       this.isGivenInstructions(true);
     }
   }
@@ -17,19 +17,19 @@ export default class Truck extends Creep {
   }
 
   load() {
-    if(this.activity() === 'load') {
+    if (this.activity() === 'load') {
       this.loadFromAssignedHarvester();
-      if(this.isFull()) {
+      if (this.isFull()) {
         this.activity('unload');
       }
     }
   }
 
   unload() {
-    if(this.activity() === 'unload') {
+    if (this.activity() === 'unload') {
       this.unloadSequence();
-      if(this.isEmpty()) {
-        if(this.isOld()) {
+      if (this.isEmpty()) {
+        if (this.isOld()) {
           this.unassignFromHarvester();
           this.activity('salvaging');
         } else {
@@ -46,16 +46,16 @@ export default class Truck extends Creep {
 
   loadFromAssignedHarvester() {
     const harvester = Game.getObjectById(this.assignedHarvester());
-    if(!harvester){
+    if (!harvester) {
       this.assignToClosestHarvester();
       return;
     }
     const path = this.pos.findPathTo(Game.getObjectById(this.assignedHarvester()), {reusePath: 7});
-    if( path.length > 1) {
+    if (path.length > 1) {
       this.move(path[0].direction);
     } else {
       const pickups = this.pos.findInRange(FIND_DROPPED_ENERGY, 1);
-      if(pickups.length) {
+      if (pickups.length) {
         this.pickup(pickups[0]);
       }
     }
@@ -63,18 +63,18 @@ export default class Truck extends Creep {
 
   unloadSequence() {
     let targets = Game.rooms[this.memory.origin].getStructuresNeedingEnergy();
-    if(!targets[0]) {
+    if (!targets[0]) {
       targets = Game.rooms[this.memory.origin].getCreepsNeedingEnergy();
     }
     const target = this.pos.findClosestByPath(targets);
-    if(target && this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+    if (target && this.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       this.moveTo(target);
     }
   }
 
   assignToClosestHarvester() {
     const assigner = this.room.findLonelyHarvesters();
-    if(assigner && assigner[0]) {
+    if (assigner && assigner[0]) {
       this.assignedHarvester(assigner[0].id);
       assigner[0].memory.assignedTruck = this.id;
       return true;
@@ -83,9 +83,9 @@ export default class Truck extends Creep {
   }
 
   unassignFromHarvester() {
-    if(this.assignedHarvester()) {
+    if (this.assignedHarvester()) {
       const harvester = Game.getObjectById(this.assignedHarvester());
-      if(harvester) {
+      if (harvester) {
         harvester.memory.assignedTruck = false;
       }
       this.assignedHarvester(false);

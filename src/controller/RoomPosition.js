@@ -1,3 +1,3 @@
-import { RoomPosition } from 'screeps-globals';
+import {RoomPosition} from 'screeps-globals';
 
 Object.assign(RoomPosition.prototype, {});

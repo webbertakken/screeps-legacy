@@ -1,11 +1,11 @@
-import { Creep } from 'screeps-globals';
+import {Creep} from 'screeps-globals';
 import '../controller/Creep';
 
 export default class Harvester extends Creep {
 
   instruct() {
     this.activity('harvesting');
-    if(this.assignToClosestFreeSource()) {
+    if (this.assignToClosestFreeSource()) {
       this.isGivenInstructions(true);
     }
   }
@@ -18,21 +18,21 @@ export default class Harvester extends Creep {
   }
 
   MOTTest() {
-    if(Game.time % 30 !== 0) {
+    if (Game.time % 30 !== 0) {
       return;
     }
-    if(this.isOld()) {
-      if(this.isAssignedToSource()) {
+    if (this.isOld()) {
+      if (this.isAssignedToSource()) {
         this.unassignFromSource();
       }
       if (this.replacementHasArrived() || this.isVeryOld()) {
         this.activity('emptying');
       }
     } else {
-      if(!this.isAssignedToSource()) {
+      if (!this.isAssignedToSource()) {
         this.assignToClosestFreeSource();
       }
-      if(!Game.getObjectById(this.assignedTruck())) {
+      if (!Game.getObjectById(this.assignedTruck())) {
         this.unassignTruck();
       }
     }
@@ -58,16 +58,16 @@ export default class Harvester extends Creep {
    * @Description i'm old, so i'm emptying
    */
   task_empty() {
-    if(this.activity() === 'emptying' && this.isEmpty()) {
+    if (this.activity() === 'emptying' && this.isEmpty()) {
       this.unassignTruck();
       this.activity('salvaging');
     }
   }
 
   unassignTruck() {
-    if(this.assignedTruck()) {
+    if (this.assignedTruck()) {
       const assignedTruck = Game.getObjectById(this.assignedTruck());
-      if(assignedTruck) {
+      if (assignedTruck) {
         assignedTruck.memory.assignedHarvester = false;
       }
       this.assignedTruck(false);
@@ -88,7 +88,7 @@ export default class Harvester extends Creep {
 
   assignToClosestFreeSource() {
     const target = _.find(this.room.memory.sources, s => !s.isGuarded && !s.assignedHarvester);
-    if(target) {
+    if (target) {
       this.targetSource(target.id);
       target.assignedHarvester = this.id;
       return true;
@@ -98,7 +98,7 @@ export default class Harvester extends Creep {
 
   unassignFromSource() {
     const target = _(this.room.memory.sources).find(s => s.assignedHarvester === this.id);
-    if(target) {
+    if (target) {
       delete target.assignedHarvester;
     }
   }

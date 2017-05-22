@@ -3,7 +3,6 @@
  * @See: https://github.com/webbertakken/screeps
  */
 'use strict';
-
 // Import in order
 import 'screeps-perf';
 import game from './controller/Game';
@@ -48,7 +47,7 @@ export function loop() {
       console.log('Error in structure: ' + e.stack);
     }
     // Clean Memory
-    if(Game.time % 100 === 0) {
+    if (Game.time % 100 === 0) {
       Game.cleanMemoryCreeps();
       Game.cleanMemoryRooms();
     }

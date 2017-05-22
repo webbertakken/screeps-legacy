@@ -14,20 +14,20 @@ const blueprintHelper = {
   },
 
   sortBodyParts(body) {
-    return _.sortBy(body, p => _.indexOf([TOUGH,MOVE,WORK,CARRY,ATTACK,RANGED_ATTACK,HEAL,CLAIM],p));
+    return _.sortBy(body, p => _.indexOf([TOUGH, MOVE, WORK, CARRY, ATTACK, RANGED_ATTACK, HEAL, CLAIM], p));
   },
 
   generateBody(bp) {
-    if(bp.energy < this.calculateCosts(bp.body)) {
+    if (bp.energy < this.calculateCosts(bp.body)) {
       return false;
     }
-    if(bp.energy > this.calculateMaxCosts(bp)) {
+    if (bp.energy > this.calculateMaxCosts(bp)) {
       bp.energy = this.calculateMaxCosts(bp);
     }
-    while( this.calculateCosts(bp.body) < bp.energy ) {
+    while (this.calculateCosts(bp.body) < bp.energy) {
       bp.body.push(bp.additionalParts.shift());
     }
-    while( this.calculateCosts(bp.body) > bp.energy ) {
+    while (this.calculateCosts(bp.body) > bp.energy) {
       bp.body.pop();
     }
     bp.body = this.sortBodyParts(bp.body);
