@@ -58,7 +58,7 @@ export default class Harvester extends Creep {
       return;
     }
 
-    console.log(this.name + ': task_search() not implemented.');
+    this.say('task_search not implemented');
   }
 
   /**
