@@ -1,8 +1,8 @@
-# My take at Screeps
+# AI for Screeps
 ## Installation
 ### NodeJS
 Install the latest version of NodeJS from [https://nodejs.org](https://nodejs.org/). 
-This will also automatically install Node Package Manager.
+
 ### Dependencies
 You might want to install Gulp and Webpack globally on your system.
 ```
