@@ -3,43 +3,37 @@ import creepMapper from '../util/creepMapper';
 
 Object.assign(Creep.prototype, {
 
+  /*
+   * Routine to execute every tick
+   */
+  routine() {
+    this.initiate();
+    this.performRole();
+  },
+
+  /*
+   * Actions to perform for this role
+   * Must be overridden in inheriting class
+   */
+  performRole() {
+    this.say('Orders?');
+  },
+
+  /*
+   * Initial setting up of any creep
+   */
   initiate() {
+    // Only initiate after spawning
+    if (this.isInitiated() || !this.ticksToLive) {
+      return;
+    }
+
     // Remove from this rooms queue
     this.room.removeQueueItemByName(this.name);
     // Set origin
     this.origin(this.room.name);
     // Indicate Creep now exists
     this.isInitiated(true);
-  },
-
-  routine() {
-    // Initiate when alive
-    if (!this.isInitiated() && this.ticksToLive) {
-      this.initiate();
-
-      return;
-    }
-
-    // Give instructions once Initiated
-    if (!this.isGivenInstructions()) {
-      this.instruct();
-
-      return;
-    }
-
-    // Perform specific role
-    this.performRole();
-  },
-
-  /**
-   * @Description i'm old and empty, time to salvage myself
-   */
-  task_salvage() {
-    if (this.activity() === 'salvaging') {
-      if (!this.isNextTo(this.disassemblerLocation())) {
-        this.moveTo(this.disassemblerLocation().x, this.disassemblerLocation().y);
-      }
-    }
   },
 
   reMap() {
@@ -58,16 +52,12 @@ Object.assign(Creep.prototype, {
     return setter === undefined ? this.memory.activity || false : this.memory.activity = setter;
   },
 
-  isGivenInstructions(setter) {
-    return setter === undefined ? !!this.memory.isInstructed : this.memory.isInstructed = setter;
-  },
-
   isOld() {
-    return this.ticksToLive <= 90;
+    return this.ticksToLive <= 120;
   },
 
   isVeryOld() {
-    return this.ticksToLive <= 35;
+    return this.ticksToLive <= 60;
   },
 
   isBeingReplaced(setter) {
@@ -86,19 +76,12 @@ Object.assign(Creep.prototype, {
     return _.sum(this.carry) + this.carryCapacity / 3 * 2 >= this.carryCapacity;
   },
 
-  carriesNoEnergy() {
-    return this.carry.energy === 0;
+  isCarryingEnergy() {
+    return this.carry.energy >= 1;
   },
 
-  carriesNoResources() {
-    return _.sum(this.carry) - this.carry.energy === 0;
-  },
-
-  disassemblerLocation() {
-    if (this.memory.disassemblerLocation === undefined) {
-      this.memory.disassemblerLocation = this.pos.findClosestByRange(FIND_MY_SPAWNS).pos;
-    }
-    return this.memory.disassemblerLocation;
+  isCarryingResources() {
+    return _.sum(this.carry) - this.carry.energy >= 1;
   },
 
   isNextTo(object) {
@@ -113,8 +96,8 @@ Object.assign(Creep.prototype, {
     return this.pos.getRangeTo(object) <= 5;
   },
 
-  role() {
-    return this.memory.role || false;
+  role(setter) {
+    return setter === undefined ? this.memory.role || false : this.memory.role = setter;
   },
 
 });
