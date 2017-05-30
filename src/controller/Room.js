@@ -6,6 +6,9 @@ Object.assign(Room.prototype, {
    * @description Set all initial values for the room and update memory.
    */
   initiate() {
+    if(this.isInitiated()) {
+      return;
+    }
     !this.memory.buildQueue ? this.memory.buildQueue = [] : false;
     !this.memory.creeps ? this.memory.creeps = {} : false;
     this.initiateSources();
@@ -20,7 +23,6 @@ Object.assign(Room.prototype, {
    * @description Routine for every tick
    */
   routine() {
-    !this.isInitiated() ? this.initiate() : false;
     if ((Game.time + 2) % 12 === 0) {
       this.convertBuildFlags();
     }
@@ -46,6 +48,7 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Add types of creeps to buildQueue in priority order
+   *
    * @return {Boolean} Has anything been added to the queue?
    */
   fillBuildQueue() {
@@ -64,6 +67,7 @@ Object.assign(Room.prototype, {
 
   /**
    * @description initial and fallback creeps, for if none of them present at all
+   *
    * @return {Boolean} Needed and successfully queued creeps?
    */
   queueInitialCreeps() {
@@ -79,108 +83,37 @@ Object.assign(Room.prototype, {
   },
 
   /**
-   * @description Determine the amount of harvesters that are needed
-   * @return {number} Amount of harvesters needed
-   */
-  setHarvestersNeeded() {
-    return this.memory.harvestersNeeded = _(this.memory.sources).filter(s => !s.isGuarded).value().length;
-  },
-
-  /**
-   * @description Queue harvesters if any are needed
-   * @return {boolean} Needed and successfully queued harvester?
-   */
-  queueHarvesters() {
-    this.setHarvestersNeeded();
-    if (this.memory.creeps.harvester < this.memory.harvestersNeeded) {
-      return !!this.addCreepToQueue('harvester', 'harvester', {}, this.energyCapacityAvailable);
-    }
-    return false;
-  },
-
-  /**
-   * @description Determine the amount of trucks that are needed
-   * @return {number} Amount of trucks needed
-   */
-  setTrucksNeeded() {
-    return this.memory.trucksNeeded = this.memory.harvestersNeeded;
-  },
-
-  /**
-   * @description Queue trucks if any are needed
-   * @return {boolean} Needed and successfully queued trucks?
-   */
-  queueTrucks() {
-    this.setTrucksNeeded();
-    if (this.memory.creeps.truck < this.memory.trucksNeeded) {
-      return !!this.addCreepToQueue('truck', 'truck', {}, this.energyCapacityAvailable);
-    }
-    return false;
-  },
-
-  /**
-   * @description Determine the amount of upgraders that are needed
-   * @return {number} Amount of upgraders needed
-   */
-  setUpgradersNeeded() {
-    if (!this.controller) {
-      return this.memory.upgradersNeeded = 0;
-    } else if (this.controller.level < 2) {
-      return this.memory.upgradersNeeded = 1;
-    } else {
-      return this.memory.upgradersNeeded = 3;
-    }
-  },
-
-  /**
-   * @description Queue upgraders if any are needed
-   * @return {boolean} Needed and successfully queued upgraders?
-   */
-  queueUpgraders() {
-    this.setUpgradersNeeded();
-    if (!this.memory.creeps.upgrader || this.memory.creeps.upgrader < this.memory.upgradersNeeded) {
-      return !!this.addCreepToQueue('upgrader', 'upgrader', {}, this.energyCapacityAvailable);
-    }
-    return false;
-  },
-
-  /**
-   * @description Determine the amount of builders that are needed
-   * @return {number} Amount of builders needed
-   */
-  setBuildersNeeded() {
-    return this.memory.buildersNeeded = 2;
-  },
-
-  /**
-   * @description Queue builders if any are needed
-   * @returns {boolean} Builder queued
-   */
-  queueBuilders() {
-    this.setBuildersNeeded();
-    const builders = this.memory.creeps.builder;
-    if (this.controller && this.controller.level > 1 && (!builders || builders < this.memory.buildersNeeded)) {
-      return !!this.addCreepToQueue('builder', 'builder', {}, this.energyCapacityAvailable);
-    }
-    return false;
-  },
-
-  /**
    * @description Add creep to end of buildQueue
+   *
+   * @todo: revisit the maxEnergy part
    *
    * @param role      {String}  Role that creep will get
    * @param template  {String}  Reference to template to generate creep from
    * @param memory    {Object}  Memory to assign to creep on spawn.
    * @param maxEnergy {Number}  Maximum amount of energy the room can spend
+   *
+   * @return {Number} new count for this role
    */
-  addCreepToQueue(role, template, memory, maxEnergy) {
+  addCreepToQueue(role, template, memory, maxEnergy, priority = false) {
+    // Add role to memory object
     Object.assign(memory, {role: role});
-    this.memory.buildQueue.push({
+
+    // Construct QueueItem
+    const QueueItem = {
       role: role,
       template: template,
       memory: memory,
       maxEnergy: maxEnergy,
-    });
+    };
+
+    // Add with or without priority
+    if(priority === true) {
+      this.memory.buildQueue.unshift(QueueItem);
+    } else {
+      this.memory.buildQueue.push(QueueItem);
+    }
+
+    // Update memory with new amount of creeps for this role
     return this.memory.creeps[role] = this.memory.creeps[role] + 1 || 1;
   },
 
@@ -191,21 +124,18 @@ Object.assign(Room.prototype, {
    * @param template  {String}  Reference to template to generate creep from
    * @param memory    {Object}  Memory to assign to creep on spawn.
    * @param maxEnergy {Number}  Maximum amount of energy the room can spend
+   *
+   * @return {Number} new count for this role
    */
   addPriorityCreepToQueue(role, template, memory, maxEnergy) {
-    Object.assign(memory, {role: role});
-    this.memory.buildQueue.unshift({
-      role: role,
-      template: template,
-      memory: memory,
-      maxEnergy: maxEnergy,
-    });
-    return this.memory.creeps[role] = this.memory.creeps[role] + 1 || 1;
+    return this.addCreepToQueue(role, template, memory, maxEnergy, true);
   },
 
   /**
    * @description Remove creep from buildQueue
+   *
    * @param creepName
+   *
    * @return {Array} Resulting buildQueue
    */
   removeQueueItemByName(creepName) {
@@ -214,6 +144,9 @@ Object.assign(Room.prototype, {
 
   /**
    * @description build construction site
+   *
+   * @todo: Make this function generic
+   * @todo: Move function to helper class
    */
   convertBuildFlags() {
     _.forEach(this.find(FIND_FLAGS), (flag) => {
@@ -227,6 +160,8 @@ Object.assign(Room.prototype, {
 
   /**
    * @description reset and fill memory.sources with the sources in this room
+   *
+   * @todo: make sure this works when a room gets reinitiated as well
    */
   initiateSources() {
     this.memory.sources = [];
@@ -236,36 +171,10 @@ Object.assign(Room.prototype, {
   },
 
   /**
-   * @description check if harvesters didn't die, mark as hostile, free up source
-   */
-  updateSources() {
-    _.forEach(this.memory.sources, (source) => {
-      if (source.assignedHarvester && !Game.getObjectById(source.assignedHarvester)) {
-        delete source.assignedHarvester;
-        source.isGuarded = true;
-      }
-    });
-  },
-
-  /**
-   * @description Find creeps with 'harvester' role
-   * @return {Array.<Harvester>} Array of creeps
-   */
-  findHarvesters() {
-    return _(this.find(FIND_MY_CREEPS)).filter(c => c.memory.role === 'harvester').value();
-  },
-
-  /**
-   * @description Find harvesters without assigned truck
-   * @return {Array.<Harvester>} Array of creeps
-   */
-  findLonelyHarvesters() {
-    return _(this.findHarvesters()).filter(h => !h.memory.assignedTruck).value();
-  },
-
-  /**
    * @description Get or Set initiated state
+   *
    * @param setter Boolean to set for this property
+   *
    * @return {boolean} The updated value
    */
   isInitiated(setter) {
@@ -274,6 +183,7 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get list of all ConstructionSites in the room
+   *
    * @return {Array.<ConstructionSite>} All ConstructionSites
    */
   getAllConstructionSites() {
@@ -285,6 +195,7 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get list of all _my_ ConstructionSites in the room
+   *
    * @return {Array.<ConstructionSite>} My ConstructionSites
    */
   getMyConstructionSites() {
@@ -296,6 +207,7 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get list of all Structures in the room
+   *
    * @return {Array.<Structure>} All Structures
    */
   getAllStructures() {
@@ -307,6 +219,7 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get list of all _my_ Structures in the room
+   *
    * @return {Array.<Structure>} My Structures
    */
   getMyStructures() {
@@ -318,6 +231,9 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get list of all Structures that do not have max hp, ordered per 100k hits
+   *
+   * @todo: make sure this is actually usable (walls, ramparts, more?)
+   *
    * @return {Array.<Structure>} Structures without full hp
    */
   getRepairableStructures() {
@@ -334,6 +250,9 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get list of ramparts (or other decaying structures) that are about to lose health
+   *
+   * @todo: revise ticksToDecay
+   *
    * @return {Array.<Structure>} Decaying Structure
    */
   getDecayingRepairables() {
@@ -348,6 +267,9 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get structures below 10k hp
+   *
+   * @todo: Properly distinguish between walls and other structures
+   *
    * @return {Array.<Structure>} Structures below 10k
    */
   getDamagedStructures() {
@@ -363,6 +285,9 @@ Object.assign(Room.prototype, {
 
   /**
    * @description get all structures that need energy in the room
+   *
+   * @todo: Revise this entire function
+   *
    * @return {Array.<Structure>} Structures needing energy in priority order
    */
   getStructuresNeedingEnergy() {
@@ -382,6 +307,9 @@ Object.assign(Room.prototype, {
 
   /**
    * @description get any storage containing energy in the room
+   *
+   * @todo: Revise this to actually be reliable
+   *
    * @return {Array.<Structure>} Storage with energy
    */
   getStorageWithEnergy() {
@@ -397,6 +325,7 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get list of all creeps in the room
+   *
    * @return {Array.<Creep>} Array of all creeps of which you are the owner
    */
   getAllCreeps() {
@@ -408,6 +337,7 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get list of all _my_ creeps in the room
+   *
    * @return {Array.<Creep>} Array of all creeps of which you are the owner
    */
   getMyCreeps() {
@@ -419,6 +349,10 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Get creeps that need to be refilled with energy
+   *
+   * @deprecated
+   * @todo: Rewrite this into a different mechanic
+   *
    * @return {Array.<Creep>} Creeps that need energy
    */
   getCreepsNeedingEnergy() {
@@ -433,7 +367,9 @@ Object.assign(Room.prototype, {
 
   /**
    * @description Determine all targets that need energy
-   * @todo revisit this function
+   *
+   * @todo revisit this function (see todo's for sub functions)
+   *
    * @return {Array.<*>|*}
    */
   getTargetsNeedingEnergy() {
