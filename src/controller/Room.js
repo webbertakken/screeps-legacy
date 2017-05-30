@@ -3,34 +3,31 @@ import {Room} from 'screeps-globals';
 Object.assign(Room.prototype, {
 
   /**
-   * @description Set all initial values for the room and update memory.
-   */
-  initiate() {
-    if(this.isInitiated()) {
-      return;
-    }
-    !this.memory.buildQueue ? this.memory.buildQueue = [] : false;
-    !this.memory.creeps ? this.memory.creeps = {} : false;
-    this.initiateSources();
-    this.setHarvestersNeeded();
-    this.setTrucksNeeded();
-    this.setUpgradersNeeded();
-    this.setBuildersNeeded();
-    this.isInitiated(true);
-  },
-
-  /**
    * @description Routine for every tick
    */
   routine() {
-    if ((Game.time + 2) % 12 === 0) {
-      this.convertBuildFlags();
+
+  },
+
+  /**
+   * @description Set all initial values for the room and update memory.
+   */
+  initiate() {
+    // Only initiate when needed
+    if (this.isInitiated()) {
+      return;
     }
-    if (Game.time % 12 === 0) {
-      this.fillBuildQueue();
+
+    // Setup Room Memory
+    try {
+      !this.memory.buildQueue ? this.memory.buildQueue = [] : false;
+      !this.memory.creeps ? this.memory.creeps = {} : false;
+      this.initiateSources();
+
+      this.isInitiated(true);
     }
-    if ((Game.time - 2) % 12 === 0) {
-      this.updateSources();
+    catch (ex) {
+      console.log('Error initiating the room: ' + ex.stack);
     }
   },
 
@@ -107,7 +104,7 @@ Object.assign(Room.prototype, {
     };
 
     // Add with or without priority
-    if(priority === true) {
+    if (priority === true) {
       this.memory.buildQueue.unshift(QueueItem);
     } else {
       this.memory.buildQueue.push(QueueItem);
