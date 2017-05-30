@@ -20,7 +20,7 @@ export default class Spawn extends StructureSpawn {
   }
 
   buildQueuedCreep() {
-    if (this.spawning || !this.room.memory.buildQueue[0] || this.room.memory.buildQueue[0].beingBuilt) {
+    if (this.spawning || !this.room.memory.buildQueue || !this.room.memory.buildQueue[0] || this.room.memory.buildQueue[0].beingBuilt) {
       return;
     }
     const queueItem = this.room.memory.buildQueue[0];
