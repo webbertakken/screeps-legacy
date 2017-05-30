@@ -9,6 +9,23 @@ gulp.task('watch', function() {
   return watch('src/**.js', ['sync']);
 });
 
+// This required me to install [screepsmod-auth] Authentication module from Steam Workshop
+gulp.task('localsync', ['altsync']);
+gulp.task('altsync', ['compile'], function() {
+  return gulp.src('dist/*.js*')
+    .pipe(
+      screeps({
+        host: process.env.SCREEPS_ALT_HOST,
+        port: parseInt(process.env.SCREEPS_ALT_PORT),
+        email: process.env.SCREEPS_EMAIL,
+        password: process.env.SCREEPS_PASSWORD,
+        branch: 'default',
+        secure: false,
+        ptr: false
+      })
+    );
+});
+
 gulp.task('sync', ['compile'], function() {
   return gulp.src('dist/*.js*')
     .pipe(

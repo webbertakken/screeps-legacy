@@ -21,12 +21,16 @@ your Screeps email address and password for this to work_
 ```
 export SCREEPS_EMAIL    = <your-screeps-email>
 export SCREEPS_PASSWORD = <your-screeps-password>
+export SCREEPS_ALT_HOST = <ip_address> (optional)
+export SCREEPS_ALT_PORT = <port_number> (optional)
 ```
 To do this permanently, edit `~/.bashrc` and add above lines at the end.
 #### Windows
 ```
 set  SCREEPS_EMAIL    = <your-screeps-email>
 set  SCREEPS_PASSWORD = <your-screeps-password>
+set  SCREEPS_ALT_HOST = <ip_address> (optional)
+set  SCREEPS_ALT_PORT = <port_number> (optional)
 ```
 To do this permanently, use `setx` instead of `set` and replace 
 the `=` with a space.

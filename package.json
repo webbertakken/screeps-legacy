@@ -19,7 +19,9 @@
     "url": "https://github.com/webbertakken/screeps/issues"
   },
   "homepage": "https://github.com/webbertakken/screeps#readme",
-  "dependencies": {},
+  "dependencies": {
+    "gulp-screeps": "^1.0.3"
+  },
   "devDependencies": {
     "babel-core": "^6.5.2",
     "babel-eslint": "^7.0.0",
